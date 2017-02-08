@@ -92,6 +92,7 @@
   <ItemGroup>
     <ClCompile Include="Application2D.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Shield.cpp" />
@@ -99,6 +100,7 @@
   <ItemGroup>
     <ClInclude Include="Application2D.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Shield.h" />
   </ItemGroup>
