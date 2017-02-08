@@ -6,34 +6,50 @@
 #include "Font.h"
 #include "Input.h"
 #include <iostream>
+
+using namespace std;
 Player::Player()
 {
+	m_2drenderer = new aie::Renderer2D();
 	m_texture = new aie::Texture("./textures/player_ship.png");
+	m_font = new aie::Font("./font/consolas.ttf", 32);
+	m_vPosition = new Vector2(100, 100);
 	m_iLives = 6;
 	m_iScore = 0;
-	m_vPosition = new Vector2(100,100);
+	std::vector<Bullet> m_bullets;
+}
+
+Player::Player(Vector2 a_position)
+{
 	m_2drenderer = new aie::Renderer2D();
+	m_texture = new aie::Texture("./textures/player_ship.png");
 	m_font = new aie::Font("./font/consolas.ttf", 32);
-	m_SpeedModifier = 1;
+	m_vPosition = new Vector2(a_position);
+	m_iLives = 6;
+	m_iScore = 0;
 }
 
 
 Player::~Player()
 {
 	delete m_vPosition;
-	delete m_texture;
-	delete m_2drenderer;
-	delete m_font;
+	//delete m_texture;
+	//delete m_2drenderer;
+	//delete m_font;
 }
 
 void Player::Draw()
 {
-	aie::Input* input = aie::Input::getInstance();
 	m_2drenderer->begin();
 	m_2drenderer->drawSprite(m_texture, m_vPosition->x, m_vPosition->y, 0, 0, 0, 0);
 	char score[16];
 	sprintf_s(score, 16, "Lives: %i", m_iLives);
-	m_2drenderer->drawText(m_font, score, 30,20);
+	m_2drenderer->drawText(m_font, score, 30, 20);
+
+	for (auto it = m_bullets.begin(); it != m_bullets.end(); it++)
+	{
+		it->draw(*m_2drenderer);
+	}
 	m_2drenderer->end();
 }
 
@@ -45,14 +61,56 @@ void Player::Update(float deltatime)
 
 	if (input->isKeyDown(aie::INPUT_KEY_RIGHT) && m_vPosition->x < 1230)
 		m_vPosition->x += m_iSpeed;
-	if (input->wasKeyPressed(aie::INPUT_KEY_SPACE)) 
+	if (input->wasKeyPressed(aie::INPUT_KEY_SPACE))
 	{
-		std::cout << "shoot bullet" << std::endl;
+		m_bullets.push_back(Bullet(*m_vPosition, Direction::UP));
 	}
-
+	for (auto it = m_bullets.begin(); it != m_bullets.end(); it++)
+	{
+		it->update(deltatime);
+	}
 }
 
-void Player::CollisionCheck(float a_x, float a_y)
+bool Player::CollisionCheck(float a_x, float a_y)
 {
+	if (m_vPosition->x > a_x - m_texture->getWidth() / 2 
+		&& m_vPosition->x < a_x + m_texture->getWidth() / 2)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
+bool Player::CollisionCheck(Bullet a_EnemyBullet)
+{
+	
+	if (m_vPosition->x > a_EnemyBullet.GetPosition().x - m_texture->getWidth() / 2 &&
+		m_vPosition->x < a_EnemyBullet.GetPosition().x + m_texture->getWidth() / 2 &&
+		m_vPosition->y > a_EnemyBullet.GetPosition().y - m_texture->getHeight() / 2 &&
+		m_vPosition->y < a_EnemyBullet.GetPosition().y + m_texture->getHeight() / 2)
+	{
+		m_iLives--;
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+bool Player::IsDead()
+{
+	if (m_iLives == -1)
+	{
+		return true;
+	}
+	else false;
+}
+
+Vector2 Player::GetPosition()
+{
+	return *m_vPosition;
+}
