@@ -81,7 +81,7 @@ void Application2D::draw() {
 
 	m_player->Draw();
 	m_2dRenderer->begin();
-	m_bullet->draw(*m_2dRenderer);
+	m_bullet->Draw();
 
 	// draw enemies
 	m_enemyManager->Draw();

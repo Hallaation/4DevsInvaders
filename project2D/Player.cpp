@@ -48,7 +48,7 @@ void Player::Draw()
 
 	for (auto it = m_bullets.begin(); it != m_bullets.end(); it++)
 	{
-		it->draw(*m_2drenderer);
+		it->Draw();
 	}
 	m_2drenderer->end();
 }
@@ -67,7 +67,7 @@ void Player::Update(float deltatime)
 	}
 	for (auto it = m_bullets.begin(); it != m_bullets.end(); it++)
 	{
-		it->update(deltatime);
+		it->Update(deltatime);
 	}
 }
 
