@@ -5,7 +5,7 @@
 #include "Audio.h"
 
 class Player;
-class Enemy;
+class EnemyManager;
 
 class Application2D : public aie::Application {
 public:
@@ -28,8 +28,7 @@ protected:
 	aie::Audio*			m_audio;
 
 	Player* m_player;
-	Enemy* m_UFO;
-	Enemy* m_enemy;
+	EnemyManager * m_enemyManager;
 	float m_depth;
 	float m_cameraX, m_cameraY;
 	float m_timer;
