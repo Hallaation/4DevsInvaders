@@ -2,7 +2,8 @@
 #include "Texture.h"
 #include "Font.h"
 #include "Input.h"
-#include "Player.h"
+
+#include "SceneHandler.h"
 
 Application2D::Application2D() {
 
@@ -22,8 +23,6 @@ bool Application2D::startup() {
 	//m_audio = new aie::Audio("./audio/powerup.wav");
 	m_font = new aie::Font("./font/consolas.ttf", 32);
 	m_player = new Player();
-	m_bullet = new Bullet(Vector2(m_player->GetPosition().x, m_player->GetPosition().y + 500), Direction::DOWN);
-	//m_bullet = Bullet(Vector2(m_player->GetPosition().x, m_player->GetPosition().y + 100), Direction:: DOWN);
 	m_cameraX = 0;
 	m_cameraY = 0;
 	m_timer = 0;
@@ -34,7 +33,8 @@ bool Application2D::startup() {
 void Application2D::shutdown() {
 
 	delete m_player;
-	delete m_bullet;
+	m_enemyManager->shutdown();
+
 }
 
 void Application2D::update(float deltaTime) {
@@ -44,10 +44,9 @@ void Application2D::update(float deltaTime) {
 	aie::Input* input = aie::Input::getInstance();
 
 	m_player->Update(deltaTime);
-	m_bullet->update(deltaTime);
-	
-	if (m_player->CollisionCheck(*m_bullet))
-		delete m_bullet;
+	SceneHandler::Update();
+	// udate enemies
+	m_enemyManager->Update(deltaTime);
 
 	/*// use arrow keys to move camera
 	if (input->isKeyDown(aie::INPUT_KEY_UP))
@@ -83,8 +82,11 @@ void Application2D::draw() {
 	m_player->Draw();
 	m_2dRenderer->begin();
 	m_bullet->draw(*m_2dRenderer);
-	m_2dRenderer->end();
-	/*
+
+	// draw enemies
+	m_enemyManager->Draw();
+        m_2dRenderer->end();
+	/*	
 	// set the camera position before we begin rendering
 	m_2dRenderer->setCameraPos(m_cameraX, m_cameraY);
 

@@ -6,6 +6,7 @@
 #include "Bullet.h"
 
 class Player;
+class EnemyManager;
 
 class Application2D : public aie::Application {
 public:
@@ -29,7 +30,7 @@ protected:
 
 	Bullet* m_bullet;
 	Player* m_player;
-	
+	EnemyManager * m_enemyManager;
 	float m_depth;
 	float m_cameraX, m_cameraY;
 	float m_timer;
