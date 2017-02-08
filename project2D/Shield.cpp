@@ -22,14 +22,14 @@ Shield::Shield(Vector2 position)
 	isDestroyed = false;
 }
 
-void Shield::CheckCollision(Bullet shotBy)
-{
-	bool isIntersecting;
-	if (!isDestroyed)
-	{
-		// AABB check here
-	}
-}
+//void Shield::CheckCollision(Bullet shotBy)
+//{
+//	bool isIntersecting;
+//	if (!isDestroyed)
+//	{
+//		// AABB check here
+//	}
+//}
 
 void Shield::Draw()
 {

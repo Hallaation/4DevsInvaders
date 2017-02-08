@@ -3,6 +3,7 @@
 #include "Font.h"
 #include "Input.h"
 #include "Player.h"
+#include "Enemy.h"
 
 Application2D::Application2D() {
 
@@ -25,6 +26,11 @@ bool Application2D::startup() {
 	m_font = new aie::Font("./font/consolas.ttf", 32);
 
 	m_player = new Player();
+
+	// enemy test
+	m_UFO = new Enemy(true, 30, 100, 500);
+	m_enemy = new Enemy(false, 15, 100, 400);
+
 	m_cameraX = 0;
 	m_cameraY = 0;
 	m_timer = 0;
@@ -34,6 +40,8 @@ bool Application2D::startup() {
 void Application2D::shutdown() {
 
 	delete m_player;
+	delete m_UFO;
+	delete m_enemy;
 }
 
 void Application2D::update(float deltaTime) {
@@ -43,6 +51,9 @@ void Application2D::update(float deltaTime) {
 	aie::Input* input = aie::Input::getInstance();
 
 	m_player->Update(deltaTime);
+	// udate enemies test
+	m_UFO->Update(deltaTime);
+	m_enemy->Update(deltaTime);
 	/*// use arrow keys to move camera
 	if (input->isKeyDown(aie::INPUT_KEY_UP))
 		m_cameraY += 500.0f * deltaTime;
@@ -75,6 +86,9 @@ void Application2D::draw() {
 	clearScreen();
 
 	m_player->Draw();
+	// draw enemies test
+	m_UFO->Draw();
+	m_enemy->Draw();
 	/*
 	// set the camera position before we begin rendering
 	m_2dRenderer->setCameraPos(m_cameraX, m_cameraY);
