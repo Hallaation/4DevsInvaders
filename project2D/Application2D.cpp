@@ -26,6 +26,10 @@ bool Application2D::startup() {
 	m_font = new aie::Font("./font/consolas.ttf", 32);
 
 	m_player = new Player();
+
+	m_enemyManager = new EnemyManager();
+	m_enemyManager->startup();
+
 	m_cameraX = 0;
 	m_cameraY = 0;
 	m_timer = 0;
@@ -35,6 +39,8 @@ bool Application2D::startup() {
 void Application2D::shutdown() {
 
 	delete m_player;
+	m_enemyManager->shutdown();
+
 }
 
 void Application2D::update(float deltaTime) {
@@ -45,6 +51,9 @@ void Application2D::update(float deltaTime) {
 
 	m_player->Update(deltaTime);
 	SceneHandler::Update();
+	// udate enemies
+	m_enemyManager->Update(deltaTime);
+
 	/*// use arrow keys to move camera
 	if (input->isKeyDown(aie::INPUT_KEY_UP))
 		m_cameraY += 500.0f * deltaTime;
@@ -77,6 +86,8 @@ void Application2D::draw() {
 	clearScreen();
 
 	m_player->Draw();
+	// draw enemies
+	m_enemyManager->Draw();
 	/*
 	// set the camera position before we begin rendering
 	m_2dRenderer->setCameraPos(m_cameraX, m_cameraY);

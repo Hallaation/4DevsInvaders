@@ -4,22 +4,23 @@ Bullet::Bullet()
 {
 	m_position = Vector2(0, 0);
 	m_direction = Direction::UP;
+	m_2drender = new aie::Renderer2D;
 }
 
 // Vector2: Starting Position | Direction: Enum Bullet Movement Direction
 Bullet::Bullet(Vector2 position, Direction direction)
 {
-	m_direction = direction;
+	m_direction	= direction;
 	m_position = position;
+	m_2drender = new aie::Renderer2D;
 }
 
 Bullet::~Bullet()
 {
-	if(m_texture != nullptr)
-		delete m_texture;
+	delete m_2drender;
 }
 
-void Bullet::update(const float deltaTime)
+void Bullet::Update(const float deltaTime)
 {
 	Vector2 velocity = GetDirection();
 	velocity = (velocity * m_speed) * deltaTime;
@@ -27,13 +28,11 @@ void Bullet::update(const float deltaTime)
 	m_position = m_position + velocity;
 }
 
-void Bullet::draw(Renderer2D& render)
+void Bullet::Draw()
 {
-	// Test
-	render.drawBox(m_position.x, m_position.y, 10, 10);
-
-	// Texture
-	// render.drawSprite(m_texture, m_position.x, m_position.y);
+	m_2drender->begin();
+	m_2drender->drawBox(m_position.x, m_position.y, m_bulletWidth, m_bulletHeight);
+	m_2drender->end();
 }
 
 Vector2 Bullet::GetPosition()
