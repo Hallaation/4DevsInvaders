@@ -2,7 +2,8 @@
 #include "Texture.h"
 #include "Font.h"
 #include "Input.h"
-#include "Player.h"
+
+#include "SceneHandler.h"
 
 Application2D::Application2D() {
 
@@ -43,6 +44,7 @@ void Application2D::update(float deltaTime) {
 	aie::Input* input = aie::Input::getInstance();
 
 	m_player->Update(deltaTime);
+	SceneHandler::Update();
 	/*// use arrow keys to move camera
 	if (input->isKeyDown(aie::INPUT_KEY_UP))
 		m_cameraY += 500.0f * deltaTime;
