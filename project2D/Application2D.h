@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "Renderer2D.h"
 #include "Audio.h"
+#include "Bullet.h"
 
 class Player;
 class EnemyManager;
@@ -27,6 +28,7 @@ protected:
 	aie::Font*			m_font;
 	aie::Audio*			m_audio;
 
+	Bullet* m_bullet;
 	Player* m_player;
 	EnemyManager * m_enemyManager;
 	float m_depth;

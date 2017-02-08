@@ -1,3 +1,4 @@
+#include "Bullet.h"
 #include "Shield.h"
 
 Shield::Shield(Vector2 position)
@@ -22,20 +23,23 @@ Shield::Shield(Vector2 position)
 	isDestroyed = false;
 }
 
-//void Shield::CheckCollision(Bullet shotBy)
-//{
-//	bool isIntersecting;
-//	if (!isDestroyed)
-//	{
-//		// AABB check here
-//	}
-//}
+void Shield::CheckCollision(Bullet shotBy)
+{
+	// Optimise with rect-collision instead of physVerts
+	bool xIntersection = shotBy.GetPosition().x > physVerts[3].x && shotBy.GetPosition().x < physVerts[1].x;
+	bool yIntersection = shotBy.GetPosition().y > physVerts[3].y && shotBy.GetPosition().y < physVerts[1].y;
+	bool isIntersecting = xIntersection && yIntersection;
+	if (!isDestroyed && isIntersecting)
+	{
+		isDestroyed == true;
+	}
+}
 
 void Shield::Draw()
 {
 	if (!isDestroyed)
 	{
-		aie::Renderer2D().drawSprite(&sprite, pos.data[0], pos.data[1], width, height);
+		aie::Renderer2D().drawSprite(&sprite, pos.x, pos.y, width, height);
 	}
 }
 

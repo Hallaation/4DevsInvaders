@@ -2,16 +2,14 @@
 #include "Texture.h"
 #include "Font.h"
 #include "Input.h"
-#include "Player.h"
-#include "EnemyManager.h"
+
+#include "SceneHandler.h"
 
 Application2D::Application2D() {
 
 }
 
 Application2D::~Application2D() {
-	//delete m_player;
-
 }
 
 bool Application2D::startup() {
@@ -24,15 +22,11 @@ bool Application2D::startup() {
 	//
 	//m_audio = new aie::Audio("./audio/powerup.wav");
 	m_font = new aie::Font("./font/consolas.ttf", 32);
-
 	m_player = new Player();
-
-	m_enemyManager = new EnemyManager();
-	m_enemyManager->startup();
-
 	m_cameraX = 0;
 	m_cameraY = 0;
 	m_timer = 0;
+	
 	return true;
 }
 
@@ -44,12 +38,13 @@ void Application2D::shutdown() {
 }
 
 void Application2D::update(float deltaTime) {
-
+	
 	m_timer += deltaTime;
 	// input example
 	aie::Input* input = aie::Input::getInstance();
 
 	m_player->Update(deltaTime);
+	SceneHandler::Update();
 	// udate enemies
 	m_enemyManager->Update(deltaTime);
 
@@ -85,14 +80,17 @@ void Application2D::draw() {
 	clearScreen();
 
 	m_player->Draw();
+	m_2dRenderer->begin();
+	m_bullet->draw(*m_2dRenderer);
+
 	// draw enemies
 	m_enemyManager->Draw();
-	/*
+        m_2dRenderer->end();
+	/*	
 	// set the camera position before we begin rendering
 	m_2dRenderer->setCameraPos(m_cameraX, m_cameraY);
 
 	// begin drawing sprites
-	m_2dRenderer->begin();
 
 	// demonstrate animation
 	m_2dRenderer->setUVRect(int(m_timer) % 8 / 8.0f, 0, 1.f / 8, 1.f / 8);
