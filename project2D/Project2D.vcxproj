@@ -102,6 +102,8 @@
   <ItemGroup>
     <ClInclude Include="Application2D.h" />
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SceneHandler.h" />
     <ClInclude Include="Shield.h" />

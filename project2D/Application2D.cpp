@@ -5,6 +5,7 @@
 #include "EnemyManager.h"
 #include "SceneHandler.h"
 
+
 Application2D::Application2D() {
 
 }
@@ -83,7 +84,11 @@ void Application2D::draw() {
 
 	//m_player->Draw();
 	m_2dRenderer->begin();
+<<<<<<< HEAD
+	m_bullet->Draw();
+=======
 	//m_bullet->Draw();
+>>>>>>> 1d3b3872e07d81eb28da1658ff1cf9cd06411b1f
 
 	// draw enemies
 	m_enemyManager->Draw();
