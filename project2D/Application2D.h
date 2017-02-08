@@ -4,6 +4,8 @@
 #include "Renderer2D.h"
 #include "Audio.h"
 
+class Player;
+
 class Application2D : public aie::Application {
 public:
 
@@ -24,6 +26,7 @@ protected:
 	aie::Font*			m_font;
 	aie::Audio*			m_audio;
 
+	Player* m_player;
 	float m_depth;
 	float m_cameraX, m_cameraY;
 	float m_timer;
