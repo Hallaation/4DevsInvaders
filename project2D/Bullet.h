@@ -1,12 +1,9 @@
 #pragma once
 #include "Vector2.h"
-#include "Texture.h"
 #include "Renderer2D.h"
 
 // Direction Velocity Direction
 enum class Direction { UP, DOWN };
-
-using namespace aie;
 
 class Bullet
 {
@@ -24,8 +21,7 @@ public:
 private:
 	const Vector2 GetDirection();
 
-	// Render
-	Renderer2D* m_2drender;
+	aie::Renderer2D* m_2Drender;
 
 	// Bullet Posiiton
 	Vector2 m_position;

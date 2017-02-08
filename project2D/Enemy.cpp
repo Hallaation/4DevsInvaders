@@ -45,6 +45,22 @@ std::shared_ptr<aie::Texture> Enemy::texture(int id)
 	return m_vTextures[id];
 }
 
+bool Enemy::hitEdge()
+{
+	return m_bHitEdge;
+}
+
+bool Enemy::hitEdge(bool swap)
+{
+	m_bHitEdge = swap;
+	return m_bHitEdge;
+}
+
+void Enemy::changeDirection()
+{
+	m_bMoveRight = !m_bMoveRight;
+}
+
 /// update enemy 
 void Enemy::Update(float deltatime)
 {	
@@ -104,10 +120,10 @@ void Enemy::enemyDirection()
 {
 	// if moving left and hits the left edge, move right
 	if (!m_bMoveRight && m_spPosition->x < 50) {
-		m_bMoveRight = true;
+		m_bHitEdge = true;
 	}
 	// if moving right and hits the right edge, move left
 	if (m_bMoveRight && m_spPosition->x > 1250) {
-		m_bMoveRight = false;
+		m_bHitEdge = true;
 	}
 }

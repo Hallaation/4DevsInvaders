@@ -3,9 +3,11 @@
 #include "Application.h"
 #include "Renderer2D.h"
 #include "Audio.h"
+#include "Bullet.h"
+#include "EnemyManager.h"
 
 class Player;
-class EnemyManager;
+
 
 class Application2D : public aie::Application {
 public:
