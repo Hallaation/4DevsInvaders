@@ -16,23 +16,27 @@ public:
 	Bullet(Vector2 position, Direction direction);
 	~Bullet();
 	
-	void update(const float deltaTime);
-	void draw(Renderer2D& render);
+	void Update(const float deltaTime);
+	void Draw();
 
 	Vector2 GetPosition();
 
 private:
 	const Vector2 GetDirection();
 
-	// Texture
-	Texture* m_texture = nullptr;
-	// Position
+	// Render
+	Renderer2D* m_2drender;
+
+	// Bullet Posiiton
 	Vector2 m_position;
+	// Bullet Fire Direction
+	Direction m_direction;
 
 	// Speed
-	const float m_speed = 250.0f;
-
-	// Bullet Direction
-	Direction m_direction;
+	const float m_speed = 350.0f;
+	// Bullet Width
+	const float m_bulletWidth = 10.0f;
+	// Bullet Height
+	const float m_bulletHeight = 20.0f;
 };
 
