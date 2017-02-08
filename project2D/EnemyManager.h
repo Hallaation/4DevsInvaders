@@ -14,9 +14,13 @@ public:
 	void shutdown();
 
 private:
-	std::vector<std::shared_ptr<aie::Texture>>	m_vEnemies;
+	std::vector<std::shared_ptr<Enemy>>	m_vEnemies;
 
 	Enemy* m_UFO;
 	Enemy* m_enemy;
+
+	const int m_iRows = 4;
+	const int m_iColumns = 10;
+	glm::vec2 
 };
 
