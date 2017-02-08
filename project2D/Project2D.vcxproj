@@ -103,6 +103,7 @@
     <ClInclude Include="Application2D.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="SceneHandler.h" />
     <ClInclude Include="Shield.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
