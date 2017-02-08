@@ -3,6 +3,7 @@
 #include "Font.h"
 #include "Input.h"
 
+#include "EnemyManager.h"
 #include "SceneHandler.h"
 
 Application2D::Application2D() {
@@ -29,6 +30,8 @@ bool Application2D::startup() {
 
 	m_enemyManager = new EnemyManager();
 	m_enemyManager->startup();
+
+	SceneHandler::StartUp();
 
 	m_cameraX = 0;
 	m_cameraY = 0;

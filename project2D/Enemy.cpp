@@ -1,9 +1,6 @@
 #include "Enemy.h"
 #include <iostream>
 
-
-
-
 Enemy::Enemy(bool UFO, float speed, float xPos, float yPos)
 {
 	m_bUFO			= UFO;

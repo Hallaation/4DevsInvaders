@@ -21,6 +21,6 @@ private:
 
 	const int m_iRows = 4;
 	const int m_iColumns = 10;
-	glm::vec2 
+	//glm::vec2 
 };
 
