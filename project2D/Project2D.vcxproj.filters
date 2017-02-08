@@ -50,6 +50,7 @@
     <ClInclude Include="Shield.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="Enemy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -62,5 +63,10 @@
     <ClInclude Include="SceneHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+=======
+    <ClInclude Include="Bullet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+>>>>>>> 1d3b3872e07d81eb28da1658ff1cf9cd06411b1f
   </ItemGroup>
 </Project>
