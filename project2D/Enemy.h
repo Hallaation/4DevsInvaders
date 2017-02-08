@@ -15,6 +15,11 @@ public:
 	std::shared_ptr<glm::vec2> position();
 	std::shared_ptr<aie::Texture> texture(int id);
 
+	// direction related
+	bool hitEdge();
+	bool hitEdge(bool swap);
+	void changeDirection();
+
 	void Draw();
 	void Update(float deltatime);
 
@@ -30,6 +35,7 @@ private:
 	bool	m_bUFO;
 	bool	m_bCanShoot;
 	bool	m_bDead;
+	bool	m_bHitEdge;
 
 	// private functions
 	void textureSwap(float deltatime);

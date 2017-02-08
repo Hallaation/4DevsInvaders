@@ -19,8 +19,11 @@ private:
 	Enemy* m_UFO;
 	Enemy* m_enemy;
 
-	const int m_iRows = 4;
-	const int m_iColumns = 10;
-	glm::vec2 
+	const int m_iRows = 5;
+	const int m_iColumns = 11;
+	glm::vec2 * m_startPosition;
+
+	// private functions
+	void changeDirection();
 };
 
