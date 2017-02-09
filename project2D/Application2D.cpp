@@ -50,7 +50,7 @@ void Application2D::update(float deltaTime) {
 	// input example
 	aie::Input* input = aie::Input::getInstance();
 
-	//m_player->Update(deltaTime);
+	m_player->Update(deltaTime);
 	SceneHandler::Update();
 	// udate enemies
 	m_enemyManager->Update(deltaTime);
@@ -86,13 +86,8 @@ void Application2D::draw() {
 	// wipe the screen to the background colour
 	clearScreen();
 
-	//m_player->Draw();
+	m_player->Draw();
 	m_2dRenderer->begin();
-<<<<<<< HEAD
-	m_bullet->Draw();
-=======
-	//m_bullet->Draw();
->>>>>>> 1d3b3872e07d81eb28da1658ff1cf9cd06411b1f
 
 	// draw enemies
 	m_enemyManager->Draw();
