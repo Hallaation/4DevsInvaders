@@ -22,7 +22,7 @@ Bullet::Bullet(Vector2 position, Direction direction)
 
 Bullet::~Bullet()
 {
-	delete m_2Drender;
+	//delete m_2Drender;
 }
 
 void Bullet::Update(const float deltaTime)

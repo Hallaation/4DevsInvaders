@@ -22,7 +22,6 @@ bool Application2D::startup() {
 	//
 	//
 	//m_audio = new aie::Audio("./audio/powerup.wav");
-
 	m_font = new aie::Font("./font/consolas.ttf", 32);
 	m_player = new Player();
 
@@ -41,8 +40,10 @@ bool Application2D::startup() {
 
 void Application2D::shutdown() {
 
-	//delete m_player;
+	delete m_player;
 	m_enemyManager->shutdown();
+	delete m_enemyManager;
+	delete m_font;
 
 }
 
