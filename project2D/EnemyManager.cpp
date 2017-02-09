@@ -1,3 +1,4 @@
+#include "SceneHandler.h"
 #include "EnemyManager.h"
 
 EnemyManager::EnemyManager()
@@ -14,16 +15,16 @@ void EnemyManager::startup()
 	// enemy test
 	m_UFO = new Enemy(true, 30, 100, 600);
 
-
-	int xPos = m_startPosition->x;
-	int yPos = m_startPosition->y;
+	int xPos = (int)m_startPosition->x;
+	int yPos = (int)m_startPosition->y;
 
 	for (int r = 0; r < m_iRows; r++){
-		for (int c = 0; c < m_iColumns; c++){
-			m_vEnemies.push_back(std::make_shared<Enemy>(false, 15, xPos, yPos));
+		for (int c = 0; c < m_iColumns; c++)
+		{
+			SceneHandler::aliens[c + r] = Enemy(false, 15.0f, (float)xPos, (float)yPos);
 			xPos += 60;
 		}
-		xPos = m_startPosition->x;
+		xPos = (int)m_startPosition->x;
 		yPos -= 60;
 	}
 }
@@ -34,17 +35,18 @@ void EnemyManager::Update(float deltatime)
 	m_UFO->Update(deltatime);
 
 	// update enemies
-	for (auto e : m_vEnemies)
+	for each(Enemy alien in SceneHandler::aliens)
 	{
-		e.get()->Update(deltatime);
+		alien.Update(deltatime);
 	}
 	
 	// have any enemies hit the edge
 	// update enemies
-	for (auto e : m_vEnemies)
+	for each(Enemy alien in SceneHandler::aliens)
 	{
-		if (e.get()->hitEdge()) {
-			e.get()->hitEdge(false);
+		if (alien.hitEdge()) 
+		{
+			alien.hitEdge(false);
 			changeDirection();
 			break;
 		}
@@ -56,9 +58,9 @@ void EnemyManager::Draw()
 	// draw ufo
 	m_UFO->Draw();
 	// draw enemies
-	for (auto e : m_vEnemies)
+	for each(Enemy alien in SceneHandler::aliens)
 	{
-		e.get()->Draw();
+		alien.Draw();
 	}
 }
 
@@ -74,12 +76,13 @@ bool EnemyManager::CollisionCheck(Bullet bullet)
 {
 	bool result = false;
 	int pos = 0;
+
 	// check if bullet hit any enemies
-	for (int i = 0; i < m_vEnemies.size(); i++)
+	for each (Enemy alien in SceneHandler::aliens)
 	{
-		if (m_vEnemies[i].get()->collisionCheck(bullet)) {
+		if (alien.collisionCheck(bullet)) {
 			result = true;
-			m_vEnemies.erase(m_vEnemies.begin() + i);
+			SceneHandler::RemoveAlien();
 			break;
 		}
 	}
@@ -92,16 +95,11 @@ bool EnemyManager::CollisionCheck(Bullet bullet)
 	return result;
 }
 
-int EnemyManager::enemyCount()
-{
-	return m_vEnemies.size();
-}
-
 void EnemyManager::changeDirection()
 {
-	for (auto e : m_vEnemies)
+	for each(Enemy alien in SceneHandler::aliens)
 	{
-		e.get()->changeDirection();
+		alien.changeDirection();
 	}
 }
 

@@ -43,7 +43,6 @@ Player::~Player()
 
 void Player::Draw()
 {
-	m_2drenderer->begin();
 	m_2drenderer->drawSprite(m_texture, m_vPosition->x, m_vPosition->y, 0, 0, 0, 0);
 	char score[16];
 	sprintf_s(score, 16, "Lives: %i", m_iLives);
