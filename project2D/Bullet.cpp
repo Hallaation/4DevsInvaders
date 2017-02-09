@@ -57,5 +57,6 @@ const Vector2 Bullet::BulletDirection()
 	{
 	case Direction::UP: return Vector2(0, 1);
 	case Direction::DOWN: return Vector2(0, -1);
+	default: return Vector2(0, 0);
 	}
 }
