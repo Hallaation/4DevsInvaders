@@ -17,7 +17,8 @@ Player::Player()
 	m_vPosition = new Vector2(100, 100);
 	m_iLives = 6;
 	m_iScore = 0;
-	std::vector<Bullet> m_bullets;
+	m_bullet = new Bullet(*m_vPosition, Direction::UP);
+	m_bulletActive = false;
 	SceneHandler::player = this;
 }
 
@@ -35,6 +36,7 @@ Player::Player(Vector2 a_position)
 Player::~Player()
 {
 	delete m_vPosition;
+	delete m_bullet;
 	//delete m_texture;
 	//delete m_2drenderer;
 	//delete m_font;
@@ -47,10 +49,8 @@ void Player::Draw()
 	sprintf_s(score, 16, "Lives: %i", m_iLives);
 	m_2drenderer->drawText(m_font, score, 30, 20);
 	m_2drenderer->end();
-
-	for (auto it = m_bullets.begin(); it != m_bullets.end(); it++)
-	{
-		it->Draw();
+	if (m_bulletActive) {
+		m_bullet->Draw();
 	}
 }
 
@@ -64,11 +64,25 @@ void Player::Update(float deltatime)
 		m_vPosition->x += m_iSpeed;
 	if (input->wasKeyPressed(aie::INPUT_KEY_SPACE))
 	{
+		if (!m_bulletActive) {
+			m_bulletActive = true;
+			m_bullet->ChangePosition(*m_vPosition);
+		}
 	}
-	for (auto it = m_bullets.begin(); it != m_bullets.end(); it++)
+
+	if (m_bulletActive) 
 	{
-		it->Update(deltatime);
+		m_bullet->Update(deltatime);
+		if (m_bullet->GetPosition().y >= 720)
+		{
+			BulletToggle();
+		}
 	}
+}
+
+void Player::BulletToggle()
+{
+	m_bulletActive = false;
 }
 
 bool Player::CollisionCheck(float a_x, float a_y)
@@ -109,10 +123,15 @@ bool Player::IsDead()
 	{
 		return true;
 	}
-	else false;
+	else return false;
 }
 
 Vector2 Player::GetPosition()
 {
 	return *m_vPosition;
+}
+
+Bullet * Player::GetBullet()
+{
+	return m_bullet;
 }
