@@ -110,7 +110,7 @@ void Application2D::draw() {
 
 	for each (Bullet bullet in SceneHandler::bullets)
 	{
-		bullet.Draw();
+		bullet.Draw(m_2dRenderer);
 	}
 	
 	for each (Shield shield in SceneHandler::shields)

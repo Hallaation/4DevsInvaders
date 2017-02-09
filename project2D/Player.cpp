@@ -49,7 +49,7 @@ void Player::Draw()
 	m_2drenderer->drawText(m_font, score, 30, 20);
 	m_2drenderer->end();
 	if (m_bulletActive) {
-		m_bullet->Draw();
+		m_bullet->Draw(m_2drenderer);
 	}
 }
 

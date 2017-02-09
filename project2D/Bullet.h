@@ -18,7 +18,7 @@ public:
 	~Bullet();
 	
 	void Update(const float deltaTime);
-	void Draw();
+	void Draw(aie::Renderer2D* m_2Drender);
 
 	Vector2 GetPosition();
 	Direction GetDirection();
