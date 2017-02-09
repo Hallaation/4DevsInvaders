@@ -4,13 +4,14 @@
 #include "Bullet.h"
 #include "Shield.h"
 #include "Player.h"
-#include "Enemy.h"
+#include "EnemyManager.h"
 
 class SceneHandler
 {
 	public:
 		static std::vector<Bullet>* bullets;
 		static std::vector<Enemy>* aliens;
+		static EnemyManager * enemyManager;		
 		static std::vector<Shield>* shields;
 		static Player* player;
 		static float scoreNumeric;
@@ -33,10 +34,8 @@ class SceneHandler
 						shield.CheckCollision(shot);
 					}
 
-					for each (Enemy alien in (*aliens))
-					{
-						//alien.
-					}
+				// check if bullets have collided with enemies
+				enemyManager->CollisionCheck(shot);
 
 					player->CollisionCheck(shot.GetPosition().x, shot.GetPosition().y);
 				}

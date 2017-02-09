@@ -1,17 +1,20 @@
 #pragma once
 #include "Enemy.h"
 
+
 class EnemyManager
 {
 public:
 	EnemyManager();
 	~EnemyManager();
 
-
+	// main functions
 	void startup();
 	void Update(float deltatime);
 	void Draw();
 	void shutdown();
+
+	bool CollisionCheck(Bullet bullet);
 
 private:
 	std::vector<std::shared_ptr<Enemy>>	m_vEnemies;
