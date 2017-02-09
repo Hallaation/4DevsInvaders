@@ -41,7 +41,7 @@ void Application2D::shutdown() {
 
 	//delete m_player;
 	m_enemyManager->shutdown();
-
+	SceneHandler::Shutdown();
 }
 
 void Application2D::update(float deltaTime) {
@@ -52,6 +52,7 @@ void Application2D::update(float deltaTime) {
 
 	//m_player->Update(deltaTime);
 	SceneHandler::Update();
+
 	// udate enemies
 	m_enemyManager->Update(deltaTime);
 
@@ -83,23 +84,22 @@ void Application2D::update(float deltaTime) {
 
 void Application2D::draw() {
 
+	// set the camera position before we begin rendering
+	m_2dRenderer->setCameraPos(m_cameraX, m_cameraY);
+
 	// wipe the screen to the background colour
 	clearScreen();
 
 	//m_player->Draw();
 	m_2dRenderer->begin();
-<<<<<<< HEAD
-	m_bullet->Draw();
-=======
+
 	//m_bullet->Draw();
->>>>>>> 1d3b3872e07d81eb28da1658ff1cf9cd06411b1f
 
 	// draw enemies
 	m_enemyManager->Draw();
-        m_2dRenderer->end();
+
+	m_2dRenderer->end();
 	/*	
-	// set the camera position before we begin rendering
-	m_2dRenderer->setCameraPos(m_cameraX, m_cameraY);
 
 	// begin drawing sprites
 
@@ -115,7 +115,6 @@ void Application2D::draw() {
 	m_2dRenderer->drawLine(300, 300, 600, 400, 2, 1);
 
 	// draw a moving purple circle
-	m_2dRenderer->setRenderColour(1, 0, 1, 1);
 	m_2dRenderer->drawCircle(sin(m_timer) * 100 + 600, 150, 50);
 
 	// draw a rotating red box
@@ -134,5 +133,12 @@ void Application2D::draw() {
 
 	// done drawing sprites
 	*/
+	
+	m_2dRenderer->begin();
+	
+	char score[15];
+	sprintf_s(score, 14, "SCORE: %i", SceneHandler::scoreNumeric);
+	m_2dRenderer->drawText(m_font, score, 0, 0);
+
 	m_2dRenderer->end();
 }

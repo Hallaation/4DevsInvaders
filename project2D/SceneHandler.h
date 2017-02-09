@@ -6,71 +6,61 @@
 #include "Player.h"
 #include "Enemy.h"
 
-class SceneHandler
+struct SceneHandler
 {
-	public:
-		static std::vector<Bullet>* bullets;
-		static std::vector<Enemy>* aliens;
-		static std::vector<Shield>* shields;
-		static Player* player;
-		static float scoreNumeric;
+	static std::vector<Bullet>* bullets;
+	static std::vector<Enemy>* aliens;
+	static std::vector<Shield>* shields;
+	static Player* player;
+	static int scoreNumeric;
 
-		static void StartUp()
-		{
-			bullets = new std::vector<Bullet>();
-			aliens = new std::vector<Enemy>();
-			shields = new std::vector<Shield>();
-		}
+	static void StartUp()
+	{
+		bullets = new std::vector<Bullet>();
+		aliens = new std::vector<Enemy>();
+		shields = new std::vector<Shield>();
+	}
 
-		static void Update()
+	static void Update()
+	{
+		if (aliens->size() > 0 /*&& player->health > 0*/)
 		{
-			if (aliens->size() > 0 /*&& player->health > 0*/)
+			for each (Bullet shot in (*bullets))
 			{
-				for each (Bullet shot in (*bullets))
+				for each (Shield shield in (*shields))
 				{
-					for each (Shield shield in (*shields))
-					{
-						shield.CheckCollision(shot);
-					}
-
-					for each (Enemy alien in (*aliens))
-					{
-						//alien.
-					}
-
-					player->CollisionCheck(shot.GetPosition().x, shot.GetPosition().y);
+					shield.CheckCollision(shot);
 				}
-			}
 
-			else if (aliens->size() > 0 /*&& player.health <= 0*/)
-			{
-				// Display game-over screen
-			}
+				for each (Enemy alien in (*aliens))
+				{
+					//
+				}
 
-			else 
-			{
-				// Display game-win screen :)
+				player->CollisionCheck(shot);
 			}
 		}
 
-		static char* GetScoreAlpha()
+		else if (aliens->size() > 0 /*&& player.health <= 0*/)
 		{
-			float scoreCopy = scoreNumeric;
-			unsigned int signlessScore = *(unsigned int*)(&scoreCopy);
-			unsigned int exponent = signlessScore >> 24;
-			unsigned char maxRadix = (char)pow(10, exponent);
-			unsigned int scoreNumericIntegral = (int)scoreNumeric;
-
-			char radixes[7] = { ((char)(scoreNumericIntegral % maxRadix / maxRadix)) + 48, 
-								((char)(scoreNumericIntegral % (maxRadix / 10) / (maxRadix / 10))) + 48,
-								((char)(scoreNumericIntegral % (maxRadix / 100) / (maxRadix / 100))) + 48, 
-								((char)(scoreNumericIntegral % (maxRadix / 1000) / (maxRadix / 1000))) + 48, 
-								((char)(scoreNumericIntegral % (maxRadix / 10000) / (maxRadix / 10000))) + 48, 
-								((char)(scoreNumericIntegral % (maxRadix / 100000) / (maxRadix / 10000))) + 48, 
-								((char)(scoreNumericIntegral % (maxRadix / 1000000) / (maxRadix / 100000))) + 48 };
-			return radixes;
+			// Display game-over screen
 		}
+		
+		else 
+		{
+			// Display game-win screen :)
+		}
+	}
 
-	private:
-		static unsigned char scoreAlpha[7];
+	static void Shutdown()
+	{
+		delete bullets;
+		bullets = nullptr;
+
+		delete aliens;
+		aliens = nullptr;
+
+		delete shields;
+		shields = nullptr;
+	}
 };

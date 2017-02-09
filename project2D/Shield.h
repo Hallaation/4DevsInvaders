@@ -24,7 +24,7 @@ private:
 	aie::Texture sprite;
 	Vector2 physVerts[4];
 	Vector2 pos;
-	float width;
-	float height;
+	int width;
+	int height;
 	bool isDestroyed;
 };
