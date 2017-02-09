@@ -64,9 +64,6 @@ void Application2D::update(float deltaTime) {
 		bullet.Update(deltaTime);
 	}
 
-	// udate enemies
-	m_enemyManager->Update(deltaTime);
-
 	/*// use arrow keys to move camera
 	if (input->isKeyDown(aie::INPUT_KEY_UP))
 		m_cameraY += 500.0f * deltaTime;
@@ -100,13 +97,12 @@ void Application2D::draw() {
 
 	// wipe the screen to the background colour
 	clearScreen();
-
-	m_player->Draw();
 	m_2dRenderer->begin();
 
+	//m_player->Draw();
+
 	// draw enemies
-	m_enemyManager->Draw();
-	m_2dRenderer->end();
+	//m_enemyManager->Draw();
 
 	for each (Bullet bullet in SceneHandler::bullets)
 	{
@@ -115,7 +111,7 @@ void Application2D::draw() {
 	
 	for each (Shield shield in SceneHandler::shields)
 	{
-		shield.Draw();
+		//shield.Draw();
 	}
 
 	/*

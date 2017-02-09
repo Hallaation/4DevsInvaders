@@ -18,13 +18,9 @@ void EnemyManager::startup()
 	int xPos = (int)m_startPosition->x;
 	int yPos = (int)m_startPosition->y;
 
-	for (int r = 0; r < m_iRows; r++){
-		for (int c = 0; c < m_iColumns; c++)
-		{
-			SceneHandler::aliens[c + r] = Enemy(false, 15.0f, (float)xPos, (float)yPos);
-			xPos += 60;
-		}
-		xPos = (int)m_startPosition->x;
+	for (int r = 0; r < 40; r++){
+		SceneHandler::aliens[r] = Enemy(false, 15.0f, (float)xPos, (float)yPos);
+		xPos = (int)m_startPosition->x + (r % 10 == 0) * 60;
 		yPos -= 60;
 	}
 }
@@ -32,7 +28,7 @@ void EnemyManager::startup()
 void EnemyManager::Update(float deltatime)
 {
 	// update ufo
-	m_UFO->Update(deltatime);
+	//m_UFO->Update(deltatime);
 
 	// update enemies
 	for each(Enemy alien in SceneHandler::aliens)
@@ -56,12 +52,14 @@ void EnemyManager::Update(float deltatime)
 void EnemyManager::Draw()
 {
 	// draw ufo
-	m_UFO->Draw();
+	//m_UFO->Draw();
 	// draw enemies
+
 	for each(Enemy alien in SceneHandler::aliens)
 	{
 		alien.Draw();
 	}
+
 }
 
 void EnemyManager::shutdown()

@@ -40,9 +40,9 @@ void Bullet::Update(const float deltaTime)
 
 void Bullet::Draw(aie::Renderer2D* m_2Drender)
 {
-	m_2Drender->begin();
+
 	m_2Drender->drawBox(m_position.x, m_position.y, BULLET_WIDTH, BULLET_HEIGHT);
-	m_2Drender->end();
+
 }
 
 Vector2 Bullet::GetPosition()
