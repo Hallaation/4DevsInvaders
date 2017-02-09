@@ -3,7 +3,8 @@
 
 EnemyManager::EnemyManager()
 {
-	m_startPosition = new glm::vec2(60, 500);
+	m_startPosition = new glm::vec2(51, 500);
+	m_iUFOTimer = 0;
 }
 
 EnemyManager::~EnemyManager()
@@ -15,8 +16,9 @@ void EnemyManager::startup()
 	// enemy test
 	m_UFO = new Enemy(true, 30, 100, 600);
 
-	int xPos = (int)m_startPosition->x;
-	int yPos = (int)m_startPosition->y;
+
+	int xPos = m_startPosition->x;
+	int yPos = m_startPosition->y;
 
 	for (int r = 0; r < 40; r++){
 		SceneHandler::aliens[r] = Enemy(false, 15.0f, (float)xPos, (float)yPos);
@@ -28,7 +30,8 @@ void EnemyManager::startup()
 void EnemyManager::Update(float deltatime)
 {
 	// update ufo
-	//m_UFO->Update(deltatime);
+	m_UFO->Update(deltatime);
+	UFODirection(deltatime);
 
 	// update enemies
 	for each(Enemy alien in SceneHandler::aliens)
@@ -68,6 +71,7 @@ void EnemyManager::shutdown()
 	{
 		delete m_UFO;
 	}
+	m_vEnemies.erase(m_vEnemies.begin(), m_vEnemies.end());
 }
 
 bool EnemyManager::CollisionCheck(Bullet bullet)
@@ -91,6 +95,30 @@ bool EnemyManager::CollisionCheck(Bullet bullet)
 	}
 
 	return result;
+}
+
+int EnemyManager::enemyCount()
+{
+	return m_vEnemies.size();
+}
+
+void EnemyManager::UFODirection(float deltatime)
+{
+	// if moving left and hits the left edge, move right
+	if (!m_UFO->hitEdge() && (m_UFO->position()->x > 1300 || m_UFO->position()->x < -30)) {
+		m_UFO->hitEdge(true);
+	}
+
+	if (m_UFO->hitEdge())
+	{
+		m_iUFOTimer += deltatime;
+	}
+
+	if (m_iUFOTimer >= m_iUFOInterval) {
+		m_UFO->changeDirection();
+		m_iUFOTimer = 0;
+		m_UFO->hitEdge(false);
+	}
 }
 
 void EnemyManager::changeDirection()
