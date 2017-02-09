@@ -14,7 +14,7 @@ Application2D::~Application2D() {
 }
 
 bool Application2D::startup() {
-	
+
 	m_2dRenderer = new aie::Renderer2D();
 	//
 	//m_texture = new aie::Texture("./textures/numbered_grid.tga");
@@ -31,7 +31,7 @@ bool Application2D::startup() {
 	m_cameraX = 0;
 	m_cameraY = 0;
 	m_timer = 0;
-	
+
 	return true;
 }
 
@@ -45,13 +45,17 @@ void Application2D::shutdown() {
 }
 
 void Application2D::update(float deltaTime) {
-	
+
 	m_timer += deltaTime;
 	// input example
 	aie::Input* input = aie::Input::getInstance();
 
 	m_player->Update(deltaTime);
 	SceneHandler::Update();
+	for (auto it = SceneHandler::bullets->begin(); it != SceneHandler::bullets->end(); ++it)
+	{
+		it->Update(deltaTime);
+	}
 	// udate enemies
 	m_enemyManager->Update(deltaTime);
 
@@ -91,8 +95,13 @@ void Application2D::draw() {
 
 	// draw enemies
 	m_enemyManager->Draw();
-        m_2dRenderer->end();
-	/*	
+	m_2dRenderer->end();
+
+	for (auto it = SceneHandler::bullets->begin(); it != SceneHandler::bullets->end(); ++it)
+	{
+		it->Draw();
+	}
+	/*
 	// set the camera position before we begin rendering
 	m_2dRenderer->setCameraPos(m_cameraX, m_cameraY);
 
@@ -120,7 +129,7 @@ void Application2D::draw() {
 	// draw a slightly rotated sprite with no texture, coloured yellow
 	m_2dRenderer->setRenderColour(1, 1, 0, 1);
 	m_2dRenderer->drawSprite(nullptr, 400, 400, 50, 50, 3.14159f * 0.25f, 1);
-	
+
 	// output some text, uses the last used colour
 	char fps[32];
 	sprintf_s(fps, 32, "FPS: %i", getFPS());

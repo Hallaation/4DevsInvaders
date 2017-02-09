@@ -65,7 +65,7 @@ void Player::Update(float deltatime)
 		m_vPosition->x += m_iSpeed;
 	if (input->wasKeyPressed(aie::INPUT_KEY_SPACE))
 	{
-		m_bullets.push_back(Bullet(*m_vPosition, Direction::UP));
+		SceneHandler::bullets->push_back(Bullet(*m_vPosition, Direction::UP));
 	}
 	for (auto it = m_bullets.begin(); it != m_bullets.end(); it++)
 	{
@@ -75,8 +75,10 @@ void Player::Update(float deltatime)
 
 bool Player::CollisionCheck(float a_x, float a_y)
 {
-	if (m_vPosition->x > a_x - m_texture->getWidth() / 2 
-		&& m_vPosition->x < a_x + m_texture->getWidth() / 2)
+	if (m_vPosition->x > a_x - m_texture->getWidth() / 2 &&
+		m_vPosition->x < a_x + m_texture->getWidth() / 2 &&
+		m_vPosition->y > a_y - m_texture->getHeight() / 2 &&
+		m_vPosition->y < a_y + m_texture->getHeight() / 2)
 	{
 		return true;
 	}
