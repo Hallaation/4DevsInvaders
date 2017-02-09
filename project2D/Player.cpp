@@ -15,9 +15,9 @@ Player::Player()
 	m_texture = new aie::Texture("./textures/player_ship.png");
 	m_font = new aie::Font("./font/consolas.ttf", 32);
 	m_vPosition = new Vector2(100, 100);
+	m_bullet = new Bullet(*m_vPosition, Direction::UP);
 	m_iLives = 6;
 	m_iScore = 0;
-	m_bullet = new Bullet(*m_vPosition, Direction::UP);
 	m_bulletActive = false;
 	SceneHandler::player = this;
 }
@@ -37,9 +37,8 @@ Player::~Player()
 {
 	delete m_vPosition;
 	delete m_bullet;
-	//delete m_texture;
-	//delete m_2drenderer;
-	//delete m_font;
+	delete m_font;
+	delete m_texture;
 }
 
 void Player::Draw()
@@ -58,6 +57,7 @@ void Player::Draw()
 void Player::Update(float deltatime)
 {
 	aie::Input* input = aie::Input::getInstance();
+	SceneHandler::scoreNumeric = m_iScore;
 	if (input->isKeyDown(aie::INPUT_KEY_LEFT) && m_vPosition->x > 50)
 		m_vPosition->x -= m_iSpeed;
 
@@ -90,8 +90,8 @@ bool Player::CollisionCheck(float a_x, float a_y)
 {
 	if (m_vPosition->x > a_x - m_texture->getWidth() / 2 &&
 		m_vPosition->x < a_x + m_texture->getWidth() / 2 &&
-		m_vPosition->y > a_y - m_texture->getHeight() / 2 &&
-		m_vPosition->y < a_y + m_texture->getHeight() / 2)
+		m_vPosition->y > a_y + m_texture->getHeight() / 2 &&
+		m_vPosition->y < a_y - m_texture->getHeight() / 2)
 	{
 		return true;
 	}
