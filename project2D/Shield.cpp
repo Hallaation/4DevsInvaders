@@ -1,4 +1,3 @@
-#include "SceneHandler.h"
 #include "Bullet.h"
 #include "Shield.h"
 
@@ -21,6 +20,7 @@ Shield::Shield(Vector2 position)
 
 	width = sprite.getWidth();
 	height = sprite.getHeight();
+	isDestroyed = false;
 }
 
 Shield::~Shield()
@@ -29,12 +29,13 @@ Shield::~Shield()
 
 void Shield::CheckCollision(Bullet shotBy)
 {
+	// Optimise with rect-collision instead of physVerts
 	bool xIntersection = shotBy.GetPosition().x > physVerts[3].x && shotBy.GetPosition().x < physVerts[1].x;
 	bool yIntersection = shotBy.GetPosition().y > physVerts[3].y && shotBy.GetPosition().y < physVerts[1].y;
 	bool isIntersecting = xIntersection && yIntersection;
-	if (isIntersecting)
+	if (!isDestroyed && isIntersecting)
 	{
-		SceneHandler::RemoveShield();
+		isDestroyed = true;
 	}
 }
 

@@ -2,6 +2,7 @@
 #include "Enemy.h"
 #include <iostream>
 
+
 class EnemyManager
 {
 public:
@@ -16,7 +17,6 @@ public:
 
 	bool CollisionCheck(Bullet bullet);
 	int enemyCount();
-	void UFODirection(float deltatime);
 
 private:
 	std::vector<std::shared_ptr<Enemy>>	m_vEnemies;
@@ -24,8 +24,6 @@ private:
 	Enemy* m_UFO;
 	Enemy* m_enemy;
 
-	int m_iUFOTimer;
-	const int m_iUFOInterval = 5;
 	const int m_iRows = 5;
 	const int m_iColumns = 11;
 	glm::vec2 * m_startPosition;

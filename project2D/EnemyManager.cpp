@@ -1,10 +1,8 @@
-#include "SceneHandler.h"
 #include "EnemyManager.h"
 
 EnemyManager::EnemyManager()
 {
-	m_startPosition = new glm::vec2(51, 500);
-	m_iUFOTimer = 0;
+	m_startPosition = new glm::vec2(60, 500);
 }
 
 EnemyManager::~EnemyManager()
@@ -20,9 +18,12 @@ void EnemyManager::startup()
 	int xPos = m_startPosition->x;
 	int yPos = m_startPosition->y;
 
-	for (int r = 0; r < 40; r++){
-		SceneHandler::aliens[r] = Enemy(false, 15.0f, (float)xPos, (float)yPos);
-		xPos = (int)m_startPosition->x + (r % 10 == 0) * 60;
+	for (int r = 0; r < m_iRows; r++){
+		for (int c = 0; c < m_iColumns; c++){
+			m_vEnemies.push_back(std::make_shared<Enemy>(false, 15, xPos, yPos));
+			xPos += 60;
+		}
+		xPos = m_startPosition->x;
 		yPos -= 60;
 	}
 }
@@ -31,21 +32,19 @@ void EnemyManager::Update(float deltatime)
 {
 	// update ufo
 	m_UFO->Update(deltatime);
-	UFODirection(deltatime);
 
 	// update enemies
-	for each(Enemy alien in SceneHandler::aliens)
+	for (auto e : m_vEnemies)
 	{
-		alien.Update(deltatime);
+		e.get()->Update(deltatime);
 	}
 	
 	// have any enemies hit the edge
 	// update enemies
-	for each(Enemy alien in SceneHandler::aliens)
+	for (auto e : m_vEnemies)
 	{
-		if (alien.hitEdge()) 
-		{
-			alien.hitEdge(false);
+		if (e.get()->hitEdge()) {
+			e.get()->hitEdge(false);
 			changeDirection();
 			break;
 		}
@@ -55,14 +54,12 @@ void EnemyManager::Update(float deltatime)
 void EnemyManager::Draw()
 {
 	// draw ufo
-	//m_UFO->Draw();
+	m_UFO->Draw();
 	// draw enemies
-
-	for each(Enemy alien in SceneHandler::aliens)
+	for (auto e : m_vEnemies)
 	{
-		alien.Draw();
+		e.get()->Draw();
 	}
-
 }
 
 void EnemyManager::shutdown()
@@ -71,20 +68,18 @@ void EnemyManager::shutdown()
 	{
 		delete m_UFO;
 	}
-	m_vEnemies.erase(m_vEnemies.begin(), m_vEnemies.end());
 }
 
 bool EnemyManager::CollisionCheck(Bullet bullet)
 {
 	bool result = false;
 	int pos = 0;
-
 	// check if bullet hit any enemies
-	for each (Enemy alien in SceneHandler::aliens)
+	for (int i = 0; i < m_vEnemies.size(); i++)
 	{
-		if (alien.collisionCheck(bullet)) {
+		if (m_vEnemies[i].get()->collisionCheck(bullet)) {
 			result = true;
-			SceneHandler::RemoveAlien();
+			m_vEnemies.erase(m_vEnemies.begin() + i);
 			break;
 		}
 	}
@@ -102,30 +97,11 @@ int EnemyManager::enemyCount()
 	return m_vEnemies.size();
 }
 
-void EnemyManager::UFODirection(float deltatime)
-{
-	// if moving left and hits the left edge, move right
-	if (!m_UFO->hitEdge() && (m_UFO->position()->x > 1300 || m_UFO->position()->x < -30)) {
-		m_UFO->hitEdge(true);
-	}
-
-	if (m_UFO->hitEdge())
-	{
-		m_iUFOTimer += deltatime;
-	}
-
-	if (m_iUFOTimer >= m_iUFOInterval) {
-		m_UFO->changeDirection();
-		m_iUFOTimer = 0;
-		m_UFO->hitEdge(false);
-	}
-}
-
 void EnemyManager::changeDirection()
 {
-	for each(Enemy alien in SceneHandler::aliens)
+	for (auto e : m_vEnemies)
 	{
-		alien.changeDirection();
+		e.get()->changeDirection();
 	}
 }
 

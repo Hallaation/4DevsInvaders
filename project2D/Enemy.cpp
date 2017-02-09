@@ -14,14 +14,11 @@ Enemy::Enemy(bool UFO, float speed, float xPos, float yPos)
 	m_iTexture		= 0;
 	m_iTextureSize	= 50;
 	m_fTimer		= 0;
-	//m_bullet		= new Bullet(Vector2(m_spPosition->x, m_spPosition->y), Direction::DOWN);
-	m_bBulletAlive	= false;
 	InitTextures();
 }
 
 Enemy::~Enemy()
 {
-	//delete m_bullet;
 }
 
 void Enemy::InitTextures()
@@ -30,56 +27,13 @@ void Enemy::InitTextures()
 	{
 		m_vTextures.push_back(std::make_shared<aie::Texture>("./textures/UFO.png"));
 		m_vTextures.push_back(std::make_shared<aie::Texture>("./textures/UFO_Dead.png"));
-		m_fMaxLeft = -50;
-		m_fMaxRight = 1300;
 	}
 	else
 	{
 		m_vTextures.push_back(std::make_shared<aie::Texture>("./textures/Enemy1_0.png"));
 		m_vTextures.push_back(std::make_shared<aie::Texture>("./textures/Enemy1_1.png"));
 		m_vTextures.push_back(std::make_shared<aie::Texture>("./textures/Enemy_Explode.png"));
-		m_fMaxLeft = 50;
-		m_fMaxRight = 1200;
 	}
-}
-
-/// update enemy 
-void Enemy::Update(float deltatime)
-{
-	// skip if UFO
-	if (!m_bUFO) {
-		// animate enemy
-		textureSwap(deltatime);
-		// check enemy direction
-		enemyDirection();
-		// shoot bullet
-		//if (!m_bBulletAlive){
-		//	shot(deltatime);
-		//}
-	}
-	// update enemy position
-	moveEnemy(deltatime);
-}
-
-/// draw enemy to screen
-void Enemy::Draw()
-{
-	m_spRenderer.get()->begin();
-
-	if (!m_bDead)
-	{
-		m_spRenderer->drawSprite(m_vTextures[m_iTexture].get(), m_spPosition->x, m_spPosition->y, m_iTextureSize, m_iTextureSize, 0, 0);
-	}
-	else
-	{
-		m_spRenderer->drawSprite(m_vTextures.back().get(), m_spPosition->x, m_spPosition->y, m_iTextureSize, m_iTextureSize, 0, 0);
-	}
-
-	m_spRenderer.get()->end();
-	// draw bullet is there is one
-	//if (m_bBulletAlive) {
-	//	m_bullet->Draw();
-	//}
 }
 
 std::shared_ptr<glm::vec2> Enemy::position()
@@ -125,22 +79,25 @@ bool Enemy::isDead()
 {
 	return m_bDead;
 }
-/// shoot bullet
-void Enemy::shot(float deltatime)
-{
-	if (m_bBulletAlive)
-	{
-		//m_bullet->Update(deltatime);
-		//if (m_bullet->GetPosition().y <= 0)
-		//{
-		//	m_bBulletAlive = false;
-		//}
+
+/// update enemy 
+void Enemy::Update(float deltatime)
+{	
+	// skip if UFO
+	if (!m_bUFO) {
+		// check enemy direction
+		enemyDirection();
+		// animate enemy
+		textureSwap(deltatime);
 	}
+	// update enemy position
+	moveEnemy(deltatime);
 }
 
 /// draw enemy to screen
 void Enemy::Draw()
 {
+	m_spRenderer.get()->begin();
 
 	if (!m_bDead)
 	{
@@ -151,6 +108,7 @@ void Enemy::Draw()
 		m_spRenderer->drawSprite(m_vTextures.back().get(), m_spPosition->x, m_spPosition->y, m_iTextureSize, m_iTextureSize, 0, 0);
 	}
 
+	m_spRenderer.get()->end();
 }
 /// swap enemies texture overtime
 void Enemy::textureSwap(float deltatime)
@@ -168,11 +126,11 @@ void Enemy::textureSwap(float deltatime)
 void Enemy::moveEnemy(float deltatime)
 {
 	// move right
-	if (m_bMoveRight && m_spPosition->x < m_fMaxRight) {
+	if (m_bMoveRight && m_spPosition->x < 1400) {
 		m_spPosition->x += m_fSpeed * deltatime;
 	}
 	// move left
-	if (!m_bMoveRight && m_spPosition->x > m_fMaxLeft) {
+	if (!m_bMoveRight && m_spPosition->x > -100) {
 		m_spPosition->x -= m_fSpeed * deltatime;
 	}
 }
@@ -184,7 +142,7 @@ void Enemy::enemyDirection()
 		m_bHitEdge = true;
 	}
 	// if moving right and hits the right edge, move left
-	if (m_bMoveRight && m_spPosition->x > 1200) {
+	if (m_bMoveRight && m_spPosition->x > 1250) {
 		m_bHitEdge = true;
 	}
 }

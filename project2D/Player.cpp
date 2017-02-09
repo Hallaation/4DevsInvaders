@@ -43,13 +43,14 @@ Player::~Player()
 
 void Player::Draw()
 {
-
+	m_2drenderer->begin();
 	m_2drenderer->drawSprite(m_texture, m_vPosition->x, m_vPosition->y, 0, 0, 0, 0);
 	char score[16];
 	sprintf_s(score, 16, "Lives: %i", m_iLives);
 	m_2drenderer->drawText(m_font, score, 30, 20);
+	m_2drenderer->end();
 	if (m_bulletActive) {
-		m_bullet->Draw(m_2drenderer);
+		m_bullet->Draw();
 	}
 }
 

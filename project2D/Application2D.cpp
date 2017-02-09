@@ -25,15 +25,11 @@ bool Application2D::startup() {
 	m_font = new aie::Font("./font/consolas.ttf", 32);
 	m_player = new Player();
 
+	SceneHandler::StartUp();
 	// initialise enemies
 	m_enemyManager = new EnemyManager();
 	m_enemyManager->startup();
-
-	// Initialise shields
-	SceneHandler::shields[0] = (Shield(Vector2(0, 0)));
-	SceneHandler::shields[1] = (Shield(Vector2(0, 0)));
-	SceneHandler::shields[2] = (Shield(Vector2(0, 0)));
-	SceneHandler::shields[3] = (Shield(Vector2(0, 0)));
+	//SceneHandler::enemyManager = m_enemyManager;
 
 	m_cameraX = 0;
 	m_cameraY = 0;
@@ -46,6 +42,7 @@ void Application2D::shutdown() {
 
 	delete m_player;
 	m_enemyManager->shutdown();
+	SceneHandler::Shutdown();
 	delete m_font;
 }
 
@@ -57,12 +54,13 @@ void Application2D::update(float deltaTime) {
 
 	m_player->Update(deltaTime);
 	m_enemyManager->Update(deltaTime);
-	
 	SceneHandler::Update();
-	for each (Bullet bullet in SceneHandler::bullets)
+	for (auto it = SceneHandler::bullets->begin(); it != SceneHandler::bullets->end(); ++it)
 	{
-		bullet.Update(deltaTime);
+		it->Update(deltaTime);
 	}
+	// udate enemies
+	m_enemyManager->Update(deltaTime);
 
 	/*// use arrow keys to move camera
 	if (input->isKeyDown(aie::INPUT_KEY_UP))
@@ -97,23 +95,19 @@ void Application2D::draw() {
 
 	// wipe the screen to the background colour
 	clearScreen();
+
+	m_player->Draw();
 	m_2dRenderer->begin();
 
-	//m_player->Draw();
-
 	// draw enemies
-	//m_enemyManager->Draw();
+	m_enemyManager->Draw();
+	m_2dRenderer->end();
 
-	for each (Bullet bullet in SceneHandler::bullets)
+	if(m_enemyManager->CollisionCheck(*m_player->GetBullet()))
 	{
-		bullet.Draw(m_2dRenderer);
+		m_player->AddScore(1);
+		m_player->BulletToggle();
 	}
-	
-	for each (Shield shield in SceneHandler::shields)
-	{
-		//shield.Draw();
-	}
-
 	/*
 	// set the camera position before we begin rendering
 	m_2dRenderer->setCameraPos(m_cameraX, m_cameraY);
@@ -150,6 +144,8 @@ void Application2D::draw() {
 
 	// done drawing sprites
 	*/
+	
+	m_2dRenderer->begin();
 	
 	char score[15];
 	sprintf_s(score, 14, "SCORE: %i", SceneHandler::scoreNumeric);

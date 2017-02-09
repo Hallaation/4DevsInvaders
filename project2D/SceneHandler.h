@@ -1,6 +1,6 @@
 #pragma once
 
-#include <list>
+#include <vector>
 #include "Bullet.h"
 #include "Shield.h"
 #include "Player.h"
@@ -8,46 +8,31 @@
 
 struct SceneHandler
 {
-	static Bullet bullets[200];
-	static char hiddenBullets;
-	static char activeBullets;
-	
-	static Enemy aliens[40];
-	static char hiddenAliens;
-
-	static Shield shields[4];
-	static char hiddenShields;
-
+	static std::vector<Bullet>* bullets;
+	static std::vector<Enemy>* aliens;
+	static std::vector<Shield>* shields;
 	static Player* player;
 	static int scoreNumeric;
 
-	static void RemoveBullet()
+	static void StartUp()
 	{
-		hiddenBullets += 1;
-	}
-
-	static void RemoveAlien()
-	{
-		hiddenAliens += 1;
-	}
-
-	static void RemoveShield()
-	{
-		hiddenShields += 1;
+		bullets = new std::vector<Bullet>();
+		aliens = new std::vector<Enemy>();
+		shields = new std::vector<Shield>();
 	}
 
 	static void Update()
 	{
-		if (hiddenAliens > 0 /*&& player->health > 0*/)
+		if (aliens->size() > 0 /*&& player->health > 0*/)
 		{
-			for each (Bullet shot in bullets)
+			for each (Bullet shot in (*bullets))
 			{
-				for each (Shield shield in shields)
+				for each (Shield shield in (*shields))
 				{
 					shield.CheckCollision(shot);
 				}
 
-				for each (Enemy alien in aliens)
+				for each (Enemy alien in (*aliens))
 				{
 					//
 				}
@@ -56,7 +41,7 @@ struct SceneHandler
 			}
 		}
 
-		else if (hiddenAliens == 40 /*&& player.health <= 0*/)
+		else if (aliens->size() > 0 /*&& player.health <= 0*/)
 		{
 			// Display game-over screen
 		}
@@ -65,5 +50,17 @@ struct SceneHandler
 		{
 			// Display game-win screen :)
 		}
+	}
+
+	static void Shutdown()
+	{
+		delete bullets;
+		bullets = nullptr;
+
+		delete aliens;
+		aliens = nullptr;
+
+		delete shields;
+		shields = nullptr;
 	}
 };

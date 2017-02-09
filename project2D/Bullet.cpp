@@ -5,9 +5,9 @@ Bullet::Bullet()
 {
 	m_position = Vector2(0, 0);
 	m_direction = Direction::UP;
+	m_2Drender = new aie::Renderer2D;
 
-
-	SceneHandler::bullets[SceneHandler::activeBullets++] = *this;
+	SceneHandler::bullets->push_back(*this);
 }
 
 // Vector2: Starting Position | Direction: Enum Bullet Movement Direction
@@ -15,12 +15,10 @@ Bullet::Bullet(Vector2 position, Direction direction)
 {
 	m_direction = direction;
 	m_position = position;
-
-
+	m_2Drender = new aie::Renderer2D;
 	if (direction == Direction::DOWN)
 	{
-
-		SceneHandler::bullets[SceneHandler::activeBullets++] = *this;
+		SceneHandler::bullets->push_back(*this);
 	}
 }
 
@@ -32,17 +30,15 @@ Bullet::~Bullet()
 void Bullet::Update(const float deltaTime)
 {
 	Vector2 velocity = BulletDirection();
-	velocity = (velocity * BULLET_SPEED) * deltaTime;
-	SceneHandler::activeBullets -= 1;
-	SceneHandler::hiddenBullets += 1;
+	velocity = (velocity * m_speed) * deltaTime;
 	m_position = m_position + velocity;
 }
 
-void Bullet::Draw(aie::Renderer2D* m_2Drender)
+void Bullet::Draw()
 {
-
-	m_2Drender->drawBox(m_position.x, m_position.y, BULLET_WIDTH, BULLET_HEIGHT);
-
+	m_2Drender->begin();
+	m_2Drender->drawBox(m_position.x, m_position.y, m_bulletWidth, m_bulletHeight);
+	m_2Drender->end();
 }
 
 Vector2 Bullet::GetPosition()
