@@ -18,7 +18,7 @@ public:
 
 	Vector2 GetPosition();
 	Direction GetDirection();
-
+	void ChangePosition(Vector2 a_position);
 private:
 	const Vector2 BulletDirection();
 

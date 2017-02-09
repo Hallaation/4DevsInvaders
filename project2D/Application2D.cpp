@@ -29,7 +29,7 @@ bool Application2D::startup() {
 	// initialise enemies
 	m_enemyManager = new EnemyManager();
 	m_enemyManager->startup();
-	SceneHandler::enemyManager = m_enemyManager;
+	//SceneHandler::enemyManager = m_enemyManager;
 
 	m_cameraX = 0;
 	m_cameraY = 0;

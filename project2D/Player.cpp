@@ -66,17 +66,18 @@ void Player::Update(float deltatime)
 	if (input->wasKeyPressed(aie::INPUT_KEY_SPACE))
 	{
 		if (!m_bulletActive) {
-			m_bullet->ChangePosition(*m_vPosition);
 			m_bulletActive = true;
-		}
-		else
-		{
-			std::cout << "";
+			m_bullet->ChangePosition(*m_vPosition);
 		}
 	}
 
-	if (m_bulletActive) {
+	if (m_bulletActive) 
+	{
 		m_bullet->Update(deltatime);
+		if (m_bullet->GetPosition().y >= 720)
+		{
+			BulletToggle();
+		}
 	}
 }
 
