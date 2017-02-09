@@ -16,14 +16,13 @@ void EnemyManager::startup()
 	// enemy test
 	m_UFO = new Enemy(true, 30, 100, 600);
 
-
-	int xPos = m_startPosition->x;
-	int yPos = m_startPosition->y;
+	float xPos = m_startPosition->x;
+	float yPos = m_startPosition->y;
 
 	for (int r = 0; r < 40; r++){
+		xPos = (int)m_startPosition->x + (r % 10) * 60;
+		yPos -= (r % 10 == 0 && r != 0) * 60;
 		SceneHandler::aliens[r] = Enemy(false, 15.0f, (float)xPos, (float)yPos);
-		xPos = (int)m_startPosition->x + (r % 10 == 0) * 60;
-		yPos -= 60;
 	}
 }
 
@@ -38,12 +37,12 @@ void EnemyManager::Update(float deltatime)
 	{
 		alien.Update(deltatime);
 	}
-	
+
 	// have any enemies hit the edge
 	// update enemies
 	for each(Enemy alien in SceneHandler::aliens)
 	{
-		if (alien.hitEdge()) 
+		if (alien.hitEdge())
 		{
 			alien.hitEdge(false);
 			changeDirection();
@@ -52,17 +51,17 @@ void EnemyManager::Update(float deltatime)
 	}
 }
 
-void EnemyManager::Draw()
+void EnemyManager::Draw(aie::Renderer2D& renderer)
 {
 	// draw ufo
-	//m_UFO->Draw();
+	m_UFO->Draw(renderer);
+
 	// draw enemies
 
 	for each(Enemy alien in SceneHandler::aliens)
 	{
-		alien.Draw();
+		alien.Draw(renderer);
 	}
-
 }
 
 void EnemyManager::shutdown()
@@ -82,14 +81,15 @@ bool EnemyManager::CollisionCheck(Bullet bullet)
 	// check if bullet hit any enemies
 	for each (Enemy alien in SceneHandler::aliens)
 	{
+		// Directional check here...
 		if (alien.collisionCheck(bullet)) {
 			result = true;
-			SceneHandler::RemoveAlien();
 			break;
 		}
 	}
 
 	// check if bullet hit ufo
+	// Directional check here...
 	if (m_UFO->collisionCheck(bullet)) {
 		result = true;
 	}

@@ -1,6 +1,6 @@
 #include "SceneHandler.h"
 
-Bullet SceneHandler::bullets[200];
+Bullet SceneHandler::bullets[100];
 Enemy SceneHandler::aliens[40];
 Shield SceneHandler::shields[4];
 Player* SceneHandler::player = nullptr;

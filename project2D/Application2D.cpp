@@ -30,10 +30,10 @@ bool Application2D::startup() {
 	m_enemyManager->startup();
 
 	// Initialise shields
-	SceneHandler::shields[0] = (Shield(Vector2(0, 0)));
-	SceneHandler::shields[1] = (Shield(Vector2(0, 0)));
-	SceneHandler::shields[2] = (Shield(Vector2(0, 0)));
-	SceneHandler::shields[3] = (Shield(Vector2(0, 0)));
+	SceneHandler::shields[0] = (Shield(Vector2(100, 200)));
+	SceneHandler::shields[1] = (Shield(Vector2(300, 200)));
+	SceneHandler::shields[2] = (Shield(Vector2(500, 200)));
+	SceneHandler::shields[3] = (Shield(Vector2(700, 200)));
 
 	m_cameraX = 0;
 	m_cameraY = 0;
@@ -57,7 +57,7 @@ void Application2D::update(float deltaTime) {
 
 	m_player->Update(deltaTime);
 	m_enemyManager->Update(deltaTime);
-	
+
 	SceneHandler::Update();
 	for each (Bullet bullet in SceneHandler::bullets)
 	{
@@ -99,19 +99,20 @@ void Application2D::draw() {
 	clearScreen();
 	m_2dRenderer->begin();
 
-	//m_player->Draw();
+	// Draw player
+	m_player->Draw(*m_2dRenderer);
 
 	// draw enemies
-	//m_enemyManager->Draw();
+	m_enemyManager->Draw(*m_2dRenderer);
 
 	for each (Bullet bullet in SceneHandler::bullets)
 	{
-		bullet.Draw(m_2dRenderer);
+		//bullet.Draw(*m_2dRenderer);
 	}
-	
+
 	for each (Shield shield in SceneHandler::shields)
 	{
-		//shield.Draw();
+		shield.Draw(*m_2dRenderer);
 	}
 
 	/*
@@ -150,7 +151,7 @@ void Application2D::draw() {
 
 	// done drawing sprites
 	*/
-	
+
 	char score[15];
 	sprintf_s(score, 14, "SCORE: %i", SceneHandler::scoreNumeric);
 	m_2dRenderer->drawText(m_font, score, 0, 0);

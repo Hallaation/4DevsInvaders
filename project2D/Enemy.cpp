@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include "SceneHandler.h"
 #include <iostream>
 
 Enemy::Enemy(bool UFO, float speed, float xPos, float yPos)
@@ -43,7 +44,7 @@ void Enemy::InitTextures()
 	}
 }
 
-/// update enemy 
+/// update enemy
 void Enemy::Update(float deltatime)
 {
 	// skip if UFO
@@ -62,20 +63,17 @@ void Enemy::Update(float deltatime)
 }
 
 /// draw enemy to screen
-void Enemy::Draw()
+void Enemy::Draw(aie::Renderer2D& renderer)
 {
-	m_spRenderer.get()->begin();
-
 	if (!m_bDead)
 	{
-		m_spRenderer->drawSprite(m_vTextures[m_iTexture].get(), m_spPosition->x, m_spPosition->y, m_iTextureSize, m_iTextureSize, 0, 0);
+		renderer.drawSprite(m_vTextures[m_iTexture].get(), m_spPosition->x, m_spPosition->y, m_iTextureSize, m_iTextureSize, 0, 0);
 	}
 	else
 	{
-		m_spRenderer->drawSprite(m_vTextures.back().get(), m_spPosition->x, m_spPosition->y, m_iTextureSize, m_iTextureSize, 0, 0);
+		//renderer.drawSprite(m_vTextures.back().get(), m_spPosition->x, m_spPosition->y, m_iTextureSize, m_iTextureSize, 0, 0);
 	}
 
-	m_spRenderer.get()->end();
 	// draw bullet is there is one
 	//if (m_bBulletAlive) {
 	//	m_bullet->Draw();
@@ -115,9 +113,12 @@ bool Enemy::collisionCheck(Bullet bullet)
 		m_spPosition->y > bullet.GetPosition().y - m_iTextureSize / 2 &&
 		m_spPosition->y < bullet.GetPosition().y + m_iTextureSize / 2)
 	{
-		m_bDead = true;
+		// Destroy/de-activate bullet here...
+		SceneHandler::RemoveAlien();
+		SceneHandler::scoreNumeric += 1;
+		SceneHandler::aliens[SceneHandler::hiddenAliens - 1].setDead(true);
 	}
-	
+
 	return m_bDead;
 }
 
@@ -125,6 +126,12 @@ bool Enemy::isDead()
 {
 	return m_bDead;
 }
+
+void Enemy::setDead(bool status)
+{
+	m_bDead = status;
+}
+
 /// shoot bullet
 void Enemy::shot(float deltatime)
 {
@@ -138,20 +145,6 @@ void Enemy::shot(float deltatime)
 	}
 }
 
-/// draw enemy to screen
-void Enemy::Draw()
-{
-
-	if (!m_bDead)
-	{
-		m_spRenderer->drawSprite(m_vTextures[m_iTexture].get(), m_spPosition->x, m_spPosition->y, m_iTextureSize, m_iTextureSize, 0, 0);
-	}
-	else
-	{
-		m_spRenderer->drawSprite(m_vTextures.back().get(), m_spPosition->x, m_spPosition->y, m_iTextureSize, m_iTextureSize, 0, 0);
-	}
-
-}
 /// swap enemies texture overtime
 void Enemy::textureSwap(float deltatime)
 {

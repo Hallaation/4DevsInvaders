@@ -13,7 +13,7 @@ public:
 	Enemy::Enemy() {}
 	Enemy(bool UFO, float speed, float xPos, float yPos);
 	~Enemy();
-	
+
 	void InitTextures();
 	std::shared_ptr<glm::vec2> position();
 	std::shared_ptr<aie::Texture> texture(int id);
@@ -25,10 +25,11 @@ public:
 
 	bool collisionCheck(Bullet bullet);
 	bool isDead();
+	void setDead(bool status);
 
 	void shot(float deltatime);
 
-	void Draw();
+	void Draw(aie::Renderer2D& renderer);
 	void Update(float deltatime);
 
 private:

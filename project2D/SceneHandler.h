@@ -8,10 +8,10 @@
 
 struct SceneHandler
 {
-	static Bullet bullets[200];
+	static Bullet bullets[100];
 	static char hiddenBullets;
 	static char activeBullets;
-	
+
 	static Enemy aliens[40];
 	static char hiddenAliens;
 
@@ -38,7 +38,7 @@ struct SceneHandler
 
 	static void Update()
 	{
-		if (hiddenAliens > 0 /*&& player->health > 0*/)
+		if (hiddenAliens != 40 /*&& player->health > 0*/)
 		{
 			for each (Bullet shot in bullets)
 			{
@@ -49,7 +49,7 @@ struct SceneHandler
 
 				for each (Enemy alien in aliens)
 				{
-					//
+					alien.collisionCheck(shot);
 				}
 
 				player->CollisionCheck(shot);
@@ -60,8 +60,8 @@ struct SceneHandler
 		{
 			// Display game-over screen
 		}
-		
-		else 
+
+		else
 		{
 			// Display game-win screen :)
 		}

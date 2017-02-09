@@ -4,10 +4,10 @@
 
 Shield::Shield(Vector2 position)
 {
-	sprite = aie::Texture("../bin/textures/shield.png");
+	sprite = new aie::Texture("../bin/textures/shieldSprite.png");
 
-	float xDiff = (float)(0.5 * sprite.getWidth());
-	float yDiff = (float)(0.5 * sprite.getHeight());
+	float xDiff = (float)(0.5 * sprite->getWidth());
+	float yDiff = (float)(0.5 * sprite->getHeight());
 
 	float negaXDiff = xDiff * -1;
 	float negaYDiff = yDiff * -1;
@@ -19,8 +19,9 @@ Shield::Shield(Vector2 position)
 
 	pos = position;
 
-	width = sprite.getWidth();
-	height = sprite.getHeight();
+	width = sprite->getWidth();
+	height = sprite->getHeight();
+	isDestroyed = false;
 }
 
 Shield::~Shield()
@@ -30,18 +31,19 @@ Shield::~Shield()
 void Shield::CheckCollision(Bullet shotBy)
 {
 	bool xIntersection = shotBy.GetPosition().x > physVerts[3].x && shotBy.GetPosition().x < physVerts[1].x;
-	bool yIntersection = shotBy.GetPosition().y > physVerts[3].y && shotBy.GetPosition().y < physVerts[1].y;
+	bool yIntersection = shotBy.GetPosition().y > physVerts[1].y && shotBy.GetPosition().y < physVerts[3].y;
 	bool isIntersecting = xIntersection && yIntersection;
-	if (isIntersecting)
+	if (!isDestroyed && isIntersecting)
 	{
 		SceneHandler::RemoveShield();
+		SceneHandler::shields[SceneHandler::hiddenShields - 1].isDestroyed = true;
 	}
 }
 
-void Shield::Draw()
+void Shield::Draw(aie::Renderer2D& renderer)
 {
 	if (!isDestroyed)
 	{
-		aie::Renderer2D().drawSprite(&sprite, pos.x, pos.y, (float)width, (float)height);
+		renderer.drawSprite(sprite, pos.x, pos.y, (float)width, (float)height);
 	}
 }

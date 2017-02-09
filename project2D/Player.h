@@ -13,10 +13,9 @@ public:
 	Player(Vector2 a_position);
 	~Player();
 
-
-	void Draw();
+	void Draw(aie::Renderer2D& renderer);
 	void Update(float deltatime);
-	
+
 	int GetScore()                {return m_iScore;}
 
 	void SetScore(int a_iScore)   {m_iScore = a_iScore;}

@@ -11,7 +11,7 @@ public:
 	// main functions
 	void startup();
 	void Update(float deltatime);
-	void Draw();
+	void Draw(aie::Renderer2D& renderer);
 	void shutdown();
 
 	bool CollisionCheck(Bullet bullet);
@@ -24,7 +24,7 @@ private:
 	Enemy* m_UFO;
 	Enemy* m_enemy;
 
-	int m_iUFOTimer;
+	float m_iUFOTimer;
 	const int m_iUFOInterval = 5;
 	const int m_iRows = 5;
 	const int m_iColumns = 11;

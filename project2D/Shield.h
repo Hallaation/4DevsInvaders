@@ -19,13 +19,16 @@ public:
 	void CheckCollision(Bullet shot);
 
 	// Draw the shield sprite in the window
-	void Draw();
+	void Draw(aie::Renderer2D& renderer);
+
+	// Stores whether or not the shield's
+	// been hit by a bullet
+	bool isDestroyed;
 
 private:
-	aie::Texture sprite;
+	aie::Texture* sprite;
 	Vector2 physVerts[4];
 	Vector2 pos;
 	int width;
 	int height;
-	bool isDestroyed;
 };

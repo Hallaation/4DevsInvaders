@@ -12,21 +12,18 @@ enum class Direction { UP, DOWN };
 class Bullet
 {
 public:
-	
 	Bullet();
 	Bullet(Vector2 position, Direction direction);
 	~Bullet();
-	
+
 	void Update(const float deltaTime);
-	void Draw(aie::Renderer2D* m_2Drender);
+	void Draw(aie::Renderer2D& m_2Drender);
 
 	Vector2 GetPosition();
 	Direction GetDirection();
 	void ChangePosition(Vector2 a_position);
 private:
 	const Vector2 BulletDirection();
-
-	aie::Renderer2D* m_2Drender;
 
 	// Bullet Posiiton
 	Vector2 m_position;
