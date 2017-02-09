@@ -23,6 +23,7 @@ public:
 	void changeDirection();
 
 	bool collisionCheck(Bullet bullet);
+	bool isDead();
 
 	void Draw();
 	void Update(float deltatime);

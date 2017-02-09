@@ -69,12 +69,15 @@ bool Enemy::collisionCheck(Bullet bullet)
 		m_spPosition->y > bullet.GetPosition().y - m_iTextureSize / 2 &&
 		m_spPosition->y < bullet.GetPosition().y + m_iTextureSize / 2)
 	{
-		return true;
+		m_bDead = true;
 	}
-	else
-	{
-		return false;
-	}
+	
+	return m_bDead;
+}
+
+bool Enemy::isDead()
+{
+	return m_bDead;
 }
 
 /// update enemy 
