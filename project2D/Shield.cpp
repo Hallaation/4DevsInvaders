@@ -23,6 +23,10 @@ Shield::Shield(Vector2 position)
 	isDestroyed = false;
 }
 
+Shield::~Shield()
+{
+}
+
 void Shield::CheckCollision(Bullet shotBy)
 {
 	// Optimise with rect-collision instead of physVerts
@@ -41,8 +45,4 @@ void Shield::Draw()
 	{
 		aie::Renderer2D().drawSprite(&sprite, pos.x, pos.y, width, height);
 	}
-}
-
-Shield::~Shield()
-{
 }

@@ -1,12 +1,9 @@
 #include "EnemyManager.h"
 
-
-
 EnemyManager::EnemyManager()
 {
 	m_startPosition = new glm::vec2(60, 500);
 }
-
 
 EnemyManager::~EnemyManager()
 {
