@@ -2,7 +2,6 @@
 #include "Enemy.h"
 #include <iostream>
 
-
 class EnemyManager
 {
 public:

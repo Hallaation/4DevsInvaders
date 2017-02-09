@@ -25,11 +25,15 @@ bool Application2D::startup() {
 	m_font = new aie::Font("./font/consolas.ttf", 32);
 	m_player = new Player();
 
-	SceneHandler::StartUp();
 	// initialise enemies
 	m_enemyManager = new EnemyManager();
 	m_enemyManager->startup();
-	SceneHandler::enemyManager = m_enemyManager;
+
+	// Initialise shields
+	SceneHandler::shields[0] = (Shield(Vector2(0, 0)));
+	SceneHandler::shields[1] = (Shield(Vector2(0, 0)));
+	SceneHandler::shields[2] = (Shield(Vector2(0, 0)));
+	SceneHandler::shields[3] = (Shield(Vector2(0, 0)));
 
 	m_cameraX = 0;
 	m_cameraY = 0;
@@ -42,7 +46,6 @@ void Application2D::shutdown() {
 
 	delete m_player;
 	m_enemyManager->shutdown();
-	SceneHandler::Shutdown();
 	delete m_font;
 }
 
@@ -54,11 +57,13 @@ void Application2D::update(float deltaTime) {
 
 	m_player->Update(deltaTime);
 	m_enemyManager->Update(deltaTime);
+	
 	SceneHandler::Update();
-	for (auto it = SceneHandler::bullets->begin(); it != SceneHandler::bullets->end(); ++it)
+	for each (Bullet bullet in SceneHandler::bullets)
 	{
-		it->Update(deltaTime);
+		bullet.Update(deltaTime);
 	}
+
 	// udate enemies
 	m_enemyManager->Update(deltaTime);
 
@@ -103,10 +108,16 @@ void Application2D::draw() {
 	m_enemyManager->Draw();
 	m_2dRenderer->end();
 
-	for (auto it = SceneHandler::bullets->begin(); it != SceneHandler::bullets->end(); ++it)
+	for each (Bullet bullet in SceneHandler::bullets)
 	{
-		it->Draw();
+		bullet.Draw();
 	}
+	
+	for each (Shield shield in SceneHandler::shields)
+	{
+		shield.Draw();
+	}
+
 	/*
 	// set the camera position before we begin rendering
 	m_2dRenderer->setCameraPos(m_cameraX, m_cameraY);
@@ -143,8 +154,6 @@ void Application2D::draw() {
 
 	// done drawing sprites
 	*/
-	
-	m_2dRenderer->begin();
 	
 	char score[15];
 	sprintf_s(score, 14, "SCORE: %i", SceneHandler::scoreNumeric);

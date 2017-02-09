@@ -10,6 +10,7 @@
 class Enemy
 {
 public:
+	Enemy::Enemy() {}
 	Enemy(bool UFO, float speed, float xPos, float yPos);
 	~Enemy();
 	
