@@ -70,6 +70,26 @@ void EnemyManager::shutdown()
 	delete m_UFO;
 }
 
+bool EnemyManager::CollisionCheck(Bullet bullet)
+{
+	bool result = false;
+
+	// check if bullet hit any enemies
+	for (auto e : m_vEnemies)
+	{
+		if (e.get()->collisionCheck(bullet)) {
+			result = true;
+		}
+	}
+
+	// check if bullet hit ufo
+	if (m_UFO->collisionCheck(bullet)) {
+		result = true;
+	}
+
+	return result;
+}
+
 void EnemyManager::changeDirection()
 {
 	for (auto e : m_vEnemies)

@@ -4,11 +4,13 @@
 #include "Bullet.h"
 #include "Shield.h"
 #include "Player.h"
+#include "EnemyManager.h"
 
 static struct SceneHandler
 {
 	static std::vector<Bullet>* bullets;
 	//std::vector<Enemy> aliens;
+	static EnemyManager * enemyManager;
 	static std::vector<Shield>* shields;
 	static Player* player;
 
@@ -24,10 +26,8 @@ static struct SceneHandler
 					shield.CheckCollision(shot);
 				}
 
-				//for each (Enemy alien in aliens)
-				//{
-				//
-				//}
+				// check if bullets have collided with enemies
+				enemyManager->CollisionCheck(shot);
 
 				player->CollisionCheck(shot.GetPosition().x, shot.GetPosition().y);
 			}
