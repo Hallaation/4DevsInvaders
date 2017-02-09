@@ -27,7 +27,7 @@ Bullet::~Bullet()
 
 void Bullet::Update(const float deltaTime)
 {
-	Vector2 velocity = GetDirection();
+	Vector2 velocity = BulletDirection();
 	velocity = (velocity * m_speed) * deltaTime;
 
 	m_position = m_position + velocity;
@@ -45,7 +45,12 @@ Vector2 Bullet::GetPosition()
 	return m_position;
 }
 
-const Vector2 Bullet::GetDirection()
+Direction Bullet::GetDirection()
+{
+	return m_direction;
+}
+
+const Vector2 Bullet::BulletDirection()
 {
 	// 1 = up | -1 = down
 	switch (m_direction)
