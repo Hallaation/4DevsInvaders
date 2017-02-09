@@ -8,6 +8,7 @@ class Bullet;
 class Shield
 {
 public:
+	Shield() {}
 	Shield(Vector2 pos);
 	~Shield();
 

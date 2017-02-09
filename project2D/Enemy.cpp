@@ -138,7 +138,20 @@ void Enemy::shot(float deltatime)
 	}
 }
 
+/// draw enemy to screen
+void Enemy::Draw()
+{
 
+	if (!m_bDead)
+	{
+		m_spRenderer->drawSprite(m_vTextures[m_iTexture].get(), m_spPosition->x, m_spPosition->y, m_iTextureSize, m_iTextureSize, 0, 0);
+	}
+	else
+	{
+		m_spRenderer->drawSprite(m_vTextures.back().get(), m_spPosition->x, m_spPosition->y, m_iTextureSize, m_iTextureSize, 0, 0);
+	}
+
+}
 /// swap enemies texture overtime
 void Enemy::textureSwap(float deltatime)
 {

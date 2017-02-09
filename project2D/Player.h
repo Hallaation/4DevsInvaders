@@ -20,7 +20,7 @@ public:
 	int GetScore()                {return m_iScore;}
 
 	void SetScore(int a_iScore)   {m_iScore = a_iScore;}
-
+	void AddScore(int a_iScore)   {m_iScore += a_iScore;}
 	void BulletToggle();
 
 	bool CollisionCheck(float a_x, float a_y);

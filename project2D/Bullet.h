@@ -5,6 +5,10 @@
 // Direction Velocity Direction
 enum class Direction { UP, DOWN };
 
+#define BULLET_SPEED 350.0f
+#define BULLET_WIDTH 10.0f
+#define BULLET_HEIGHT 20.0f
+
 class Bullet
 {
 public:
@@ -14,7 +18,7 @@ public:
 	~Bullet();
 	
 	void Update(const float deltaTime);
-	void Draw();
+	void Draw(aie::Renderer2D* m_2Drender);
 
 	Vector2 GetPosition();
 	Direction GetDirection();
@@ -28,12 +32,5 @@ private:
 	Vector2 m_position;
 	// Bullet Fire Direction
 	Direction m_direction;
-
-	// Speed
-	const float m_speed = 350.0f;
-	// Bullet Width
-	const float m_bulletWidth = 10.0f;
-	// Bullet Height
-	const float m_bulletHeight = 20.0f;
 };
 
