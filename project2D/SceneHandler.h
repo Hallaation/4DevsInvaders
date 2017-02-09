@@ -10,7 +10,7 @@ class SceneHandler
 {
 	public:
 		static std::vector<Bullet>* bullets;
-		static std::vector<Enemy>* aliens;
+		//static std::vector<Enemy>* aliens;
 		static EnemyManager * enemyManager;		
 		static std::vector<Shield>* shields;
 		static Player* player;
@@ -19,13 +19,13 @@ class SceneHandler
 		static void StartUp()
 		{
 			bullets = new std::vector<Bullet>();
-			aliens = new std::vector<Enemy>();
+			//aliens = new std::vector<Enemy>();
 			shields = new std::vector<Shield>();
 		}
 
 		static void Update()
 		{
-			if (aliens->size() > 0 /*&& player->health > 0*/)
+			if (enemyManager->enemyCount() > 0 /*&& player->health > 0*/)
 			{
 				for each (Bullet shot in (*bullets))
 				{
@@ -34,14 +34,14 @@ class SceneHandler
 						shield.CheckCollision(shot);
 					}
 
-				// check if bullets have collided with enemies
-				enemyManager->CollisionCheck(shot);
+					// check if bullets have collided with enemies
+					enemyManager->CollisionCheck(shot);
 
 					player->CollisionCheck(shot.GetPosition().x, shot.GetPosition().y);
 				}
 			}
 
-			else if (aliens->size() > 0 /*&& player.health <= 0*/)
+			else if (enemyManager->enemyCount() > 0 /*&& player.health <= 0*/)
 			{
 				// Display game-over screen
 			}

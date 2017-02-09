@@ -22,13 +22,15 @@ bool Application2D::startup() {
 	//
 	//
 	//m_audio = new aie::Audio("./audio/powerup.wav");
-	m_enemyManager = new EnemyManager();
-	m_enemyManager->startup();
+
 	m_font = new aie::Font("./font/consolas.ttf", 32);
 	m_player = new Player();
+
+	SceneHandler::StartUp();
+	// initialise enemies
 	m_enemyManager = new EnemyManager();
 	m_enemyManager->startup();
-	SceneHandler::StartUp();
+	SceneHandler::enemyManager = m_enemyManager;
 
 	m_cameraX = 0;
 	m_cameraY = 0;
@@ -51,9 +53,8 @@ void Application2D::update(float deltaTime) {
 	aie::Input* input = aie::Input::getInstance();
 
 	m_player->Update(deltaTime);
-	SceneHandler::Update();
-	// udate enemies
 	m_enemyManager->Update(deltaTime);
+	SceneHandler::Update();
 
 	/*// use arrow keys to move camera
 	if (input->isKeyDown(aie::INPUT_KEY_UP))

@@ -15,6 +15,7 @@ public:
 	void shutdown();
 
 	bool CollisionCheck(Bullet bullet);
+	int enemyCount();
 
 private:
 	std::vector<std::shared_ptr<Enemy>>	m_vEnemies;

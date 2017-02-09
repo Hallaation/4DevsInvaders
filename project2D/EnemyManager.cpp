@@ -87,6 +87,12 @@ bool EnemyManager::CollisionCheck(Bullet bullet)
 	return result;
 }
 
+int EnemyManager::enemyCount()
+{
+	//return m_vEnemies.size();
+	return 55;
+}
+
 void EnemyManager::changeDirection()
 {
 	for (auto e : m_vEnemies)
