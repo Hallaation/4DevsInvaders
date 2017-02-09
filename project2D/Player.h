@@ -21,20 +21,23 @@ public:
 
 	void SetScore(int a_iScore)   {m_iScore = a_iScore;}
 
+	void BulletToggle();
+
 	bool CollisionCheck(float a_x, float a_y);
 	bool CollisionCheck(Bullet aEnemyBullet);
 	bool IsDead();
 	Vector2 GetPosition();
+	Bullet* GetBullet();
 private:
 	Vector2*            m_vPosition;
-	std::vector<Bullet>  m_bullets;
-	aie::Texture*        m_texture;
-	aie::Renderer2D*     m_2drenderer;
-	aie::Font*           m_font;
+	aie::Texture*       m_texture;
+	aie::Renderer2D*    m_2drenderer;
+	aie::Font*          m_font;
 
+	Bullet*              m_bullet;
 	int                 m_iLives;
 	int                 m_iScore;
 	const float         m_iSpeed = 5;
-
+	bool                m_bulletActive;
 };
 
