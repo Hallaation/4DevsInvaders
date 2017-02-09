@@ -64,7 +64,37 @@ void EnemyManager::Draw()
 
 void EnemyManager::shutdown()
 {
-	delete m_UFO;
+	if (m_UFO != nullptr)
+	{
+		delete m_UFO;
+	}
+}
+
+bool EnemyManager::CollisionCheck(Bullet bullet)
+{
+	bool result = false;
+	int pos = 0;
+	// check if bullet hit any enemies
+	for (int i = 0; i < m_vEnemies.size(); i++)
+	{
+		if (m_vEnemies[i].get()->collisionCheck(bullet)) {
+			result = true;
+			m_vEnemies.erase(m_vEnemies.begin() + i);
+			break;
+		}
+	}
+
+	// check if bullet hit ufo
+	if (m_UFO->collisionCheck(bullet)) {
+		result = true;
+	}
+
+	return result;
+}
+
+int EnemyManager::enemyCount()
+{
+	return m_vEnemies.size();
 }
 
 void EnemyManager::changeDirection()

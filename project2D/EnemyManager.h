@@ -1,5 +1,7 @@
 #pragma once
 #include "Enemy.h"
+#include <iostream>
+
 
 class EnemyManager
 {
@@ -7,11 +9,14 @@ public:
 	EnemyManager();
 	~EnemyManager();
 
-
+	// main functions
 	void startup();
 	void Update(float deltatime);
 	void Draw();
 	void shutdown();
+
+	bool CollisionCheck(Bullet bullet);
+	int enemyCount();
 
 private:
 	std::vector<std::shared_ptr<Enemy>>	m_vEnemies;

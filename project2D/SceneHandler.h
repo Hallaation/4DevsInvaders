@@ -4,7 +4,7 @@
 #include "Bullet.h"
 #include "Shield.h"
 #include "Player.h"
-#include "Enemy.h"
+#include "EnemyManager.h"
 
 struct SceneHandler
 {

@@ -17,9 +17,10 @@ public:
 	void Draw();
 
 	Vector2 GetPosition();
+	Direction GetDirection();
 
 private:
-	const Vector2 GetDirection();
+	const Vector2 BulletDirection();
 
 	aie::Renderer2D* m_2Drender;
 

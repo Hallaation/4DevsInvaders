@@ -5,6 +5,7 @@
 #include "Texture.h"
 #include "Font.h"
 #include "Input.h"
+#include "SceneHandler.h"
 #include <iostream>
 
 using namespace std;
@@ -17,6 +18,7 @@ Player::Player()
 	m_iLives = 6;
 	m_iScore = 0;
 	std::vector<Bullet> m_bullets;
+	SceneHandler::player = this;
 }
 
 Player::Player(Vector2 a_position)
@@ -45,12 +47,12 @@ void Player::Draw()
 	char score[16];
 	sprintf_s(score, 16, "Lives: %i", m_iLives);
 	m_2drenderer->drawText(m_font, score, 30, 20);
+	m_2drenderer->end();
 
 	for (auto it = m_bullets.begin(); it != m_bullets.end(); it++)
 	{
 		it->Draw();
 	}
-	m_2drenderer->end();
 }
 
 void Player::Update(float deltatime)
@@ -63,7 +65,7 @@ void Player::Update(float deltatime)
 		m_vPosition->x += m_iSpeed;
 	if (input->wasKeyPressed(aie::INPUT_KEY_SPACE))
 	{
-		m_bullets.push_back(Bullet(*m_vPosition, Direction::UP));
+		SceneHandler::bullets->push_back(Bullet(*m_vPosition, Direction::UP));
 	}
 	for (auto it = m_bullets.begin(); it != m_bullets.end(); it++)
 	{
@@ -73,8 +75,10 @@ void Player::Update(float deltatime)
 
 bool Player::CollisionCheck(float a_x, float a_y)
 {
-	if (m_vPosition->x > a_x - m_texture->getWidth() / 2 
-		&& m_vPosition->x < a_x + m_texture->getWidth() / 2)
+	if (m_vPosition->x > a_x - m_texture->getWidth() / 2 &&
+		m_vPosition->x < a_x + m_texture->getWidth() / 2 &&
+		m_vPosition->y > a_y - m_texture->getHeight() / 2 &&
+		m_vPosition->y < a_y + m_texture->getHeight() / 2)
 	{
 		return true;
 	}

@@ -1,6 +1,8 @@
 #pragma once
 #include "Renderer2D.h"
 #include "Texture.h"
+#include "Bullet.h"
+
 #include <glm/glm.hpp>
 #include <memory>
 #include <vector>
@@ -20,6 +22,9 @@ public:
 	bool hitEdge(bool swap);
 	void changeDirection();
 
+	bool collisionCheck(Bullet bullet);
+	bool isDead();
+
 	void Draw();
 	void Update(float deltatime);
 
@@ -28,6 +33,7 @@ private:
 	std::shared_ptr<aie::Renderer2D>			m_spRenderer;
 	std::shared_ptr<glm::vec2>					m_spPosition;
 	int		m_iTexture;
+	int		m_iTextureSize;
 	float	m_fTimer;
 	bool	m_bMoveRight;
 	float	m_fSpeed;

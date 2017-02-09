@@ -12,6 +12,7 @@ Enemy::Enemy(bool UFO, float speed, float xPos, float yPos)
 	m_spPosition	= std::make_shared<glm::vec2>(xPos,yPos);
 	m_spRenderer	= std::make_shared<aie::Renderer2D>();
 	m_iTexture		= 0;
+	m_iTextureSize	= 50;
 	m_fTimer		= 0;
 	InitTextures();
 }
@@ -61,6 +62,24 @@ void Enemy::changeDirection()
 	m_bMoveRight = !m_bMoveRight;
 }
 
+bool Enemy::collisionCheck(Bullet bullet)
+{
+	if (m_spPosition->x > bullet.GetPosition().x - m_iTextureSize / 2 &&
+		m_spPosition->x < bullet.GetPosition().x + m_iTextureSize / 2 &&
+		m_spPosition->y > bullet.GetPosition().y - m_iTextureSize / 2 &&
+		m_spPosition->y < bullet.GetPosition().y + m_iTextureSize / 2)
+	{
+		m_bDead = true;
+	}
+	
+	return m_bDead;
+}
+
+bool Enemy::isDead()
+{
+	return m_bDead;
+}
+
 /// update enemy 
 void Enemy::Update(float deltatime)
 {	
@@ -82,11 +101,11 @@ void Enemy::Draw()
 
 	if (!m_bDead)
 	{
-		m_spRenderer->drawSprite(m_vTextures[m_iTexture].get(), m_spPosition->x, m_spPosition->y, 50, 50, 0, 0);
+		m_spRenderer->drawSprite(m_vTextures[m_iTexture].get(), m_spPosition->x, m_spPosition->y, m_iTextureSize, m_iTextureSize, 0, 0);
 	}
 	else
 	{
-		m_spRenderer->drawSprite(m_vTextures.back().get(), m_spPosition->x, m_spPosition->y, 50, 50, 0, 0);
+		m_spRenderer->drawSprite(m_vTextures.back().get(), m_spPosition->x, m_spPosition->y, m_iTextureSize, m_iTextureSize, 0, 0);
 	}
 
 	m_spRenderer.get()->end();
