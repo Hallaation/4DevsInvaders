@@ -49,7 +49,7 @@ void Enemy::InitTextures()
 		m_vTextures.push_back(std::make_shared<aie::Texture>("./textures/Enemy1_1.png"));
 		m_vTextures.push_back(std::make_shared<aie::Texture>("./textures/Enemy_Explode.png"));
 		m_fMaxLeft = 50;
-		m_fMaxRight = 1300;
+		m_fMaxRight = 1250;
 	}
 }
 
@@ -209,11 +209,11 @@ void Enemy::moveEnemy(float deltatime)
 void Enemy::enemyDirection()
 {
 	// if moving left and hits the left edge, move right
-	if (m_spPosition->x < 50) {
+	if (m_spPosition->x < m_fMaxLeft) {
 		m_bMoveRight = true;
 	}
 	// if moving right and hits the right edge, move left
-	if (m_spPosition->x > 1200) {
+	if (m_spPosition->x > m_fMaxRight) {
 		m_bMoveRight = false;
 	}
 }
