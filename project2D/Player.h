@@ -16,14 +16,15 @@ public:
 	void Draw(aie::Renderer2D& renderer);
 	void Update(float deltatime);
 
-	int GetScore()                {return m_iScore;}
+	int GetScore() { return m_iScore; }
+	int GetLives();
 
-	void SetScore(int a_iScore)   {m_iScore = a_iScore;}
-	void AddScore(int a_iScore)   {m_iScore += a_iScore;}
+	void SetScore(int a_iScore) { m_iScore = a_iScore; }
+	void AddScore(int a_iScore) { m_iScore += a_iScore; }
 	void BulletToggle();
 
 	bool CollisionCheck(float a_x, float a_y);
-	bool CollisionCheck(Bullet aEnemyBullet);
+	bool CollisionCheck(Bullet& aEnemyBullet);
 	bool IsDead();
 	Vector2 GetPosition();
 	Bullet* GetBullet();
@@ -36,7 +37,7 @@ private:
 	Bullet*              m_bullet;
 	int                 m_iLives;
 	int                 m_iScore;
-	const float         m_iSpeed = 5;
+	float         m_iSpeed;
 	bool                m_bulletActive;
 };
 

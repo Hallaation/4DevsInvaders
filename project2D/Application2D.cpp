@@ -5,7 +5,6 @@
 #include "EnemyManager.h"
 #include "SceneHandler.h"
 
-
 Application2D::Application2D() {
 
 }
@@ -56,13 +55,12 @@ void Application2D::update(float deltaTime) {
 	aie::Input* input = aie::Input::getInstance();
 
 	m_player->Update(deltaTime);
-	m_enemyManager->Update(deltaTime);
 
 	SceneHandler::Update();
-	for each (Bullet bullet in SceneHandler::bullets)
-	{
-		bullet.Update(deltaTime);
-	}
+	//for each (Bullet bullet in SceneHandler::bullets)
+	//{
+	//	bullet.Update(deltaTime);
+	//}
 
 	/*// use arrow keys to move camera
 	if (input->isKeyDown(aie::INPUT_KEY_UP))
@@ -99,20 +97,41 @@ void Application2D::draw() {
 	clearScreen();
 	m_2dRenderer->begin();
 
-	// Draw player
-	m_player->Draw(*m_2dRenderer);
+	//for each (Bullet bullet in SceneHandler::bullets)
+	//{
+	//	//bullet.Draw(*m_2dRenderer);
+	//}
 
-	// draw enemies
-	m_enemyManager->Draw(*m_2dRenderer);
+	char score[15];
+	sprintf_s(score, 14, "SCORE: %i", SceneHandler::scoreNumeric);
 
-	for each (Bullet bullet in SceneHandler::bullets)
+	if (SceneHandler::globalGameOver)
 	{
-		//bullet.Draw(*m_2dRenderer);
+		m_2dRenderer->drawText(m_font, "GAME OVER", getWindowWidth() / 2.2, getWindowHeight() / 2);
+		m_2dRenderer->drawText(m_font, score, getWindowWidth() / 2.2, getWindowHeight() / 2 - 30);
 	}
 
-	for each (Shield shield in SceneHandler::shields)
+	else if (SceneHandler::globalGameVictory)
 	{
-		shield.Draw(*m_2dRenderer);
+		m_2dRenderer->drawText(m_font, "VICTORY", getWindowWidth() / 2.2, getWindowHeight() / 2);
+		m_2dRenderer->drawText(m_font, score, getWindowWidth() / 2.285, getWindowHeight() / 2 - 30);
+	}
+
+	else 
+	{
+		// Draw player
+		m_player->Draw(*m_2dRenderer);
+
+		// draw enemies
+		m_enemyManager->Draw(*m_2dRenderer);
+
+		// Draw shields
+		for each (Shield shield in SceneHandler::shields)
+		{
+			shield.Draw(*m_2dRenderer);
+		}
+
+		m_2dRenderer->drawText(m_font, score, 0, 0);
 	}
 
 	/*
@@ -151,10 +170,6 @@ void Application2D::draw() {
 
 	// done drawing sprites
 	*/
-
-	char score[15];
-	sprintf_s(score, 14, "SCORE: %i", SceneHandler::scoreNumeric);
-	m_2dRenderer->drawText(m_font, score, 0, 0);
 
 	m_2dRenderer->end();
 }

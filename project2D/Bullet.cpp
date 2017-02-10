@@ -5,6 +5,7 @@ Bullet::Bullet()
 {
 	m_position = Vector2(0, 0);
 	m_direction = Direction::UP;
+	m_bulletActive = false;
 }
 
 // Vector2: Starting Position | Direction: Enum Bullet Movement Direction
@@ -12,7 +13,7 @@ Bullet::Bullet(Vector2 position, Direction direction)
 {
 	m_direction = direction;
 	m_position = position;
-
+	m_bulletActive = false;
 	if (direction == Direction::DOWN)
 	{
 		//SceneHandler::bullets[SceneHandler::activeBullets++] = *this;
@@ -31,6 +32,11 @@ void Bullet::Update(const float deltaTime)
 	SceneHandler::activeBullets -= 1;
 	SceneHandler::hiddenBullets += 1;
 	m_position = m_position + velocity;
+
+	if (m_position.y >= 720 || m_position.y <= 0)
+	{
+		m_bulletActive = false;
+	}
 }
 
 void Bullet::Draw(aie::Renderer2D& m_2Drender)
@@ -58,8 +64,13 @@ const Vector2 Bullet::BulletDirection()
 	// 1 = up | -1 = down
 	switch (m_direction)
 	{
-	case Direction::UP: return Vector2(0, 1);
-	case Direction::DOWN: return Vector2(0, -1);
-	default: return Vector2(0, 0);
+        case Direction::UP: 
+			return Vector2(0, 1);
+
+        case Direction::DOWN: 
+			return Vector2(0, -1);
+
+        default: 
+			return Vector2(0, 0);
 	}
 }

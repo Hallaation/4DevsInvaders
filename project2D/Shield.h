@@ -16,7 +16,7 @@ public:
 	// with the shield; if it has, and the
 	// shield hasn't been destroyed yet,
 	// destroy it
-	void CheckCollision(Bullet shot);
+	void CheckCollision(Bullet& shotBy);
 
 	// Draw the shield sprite in the window
 	void Draw(aie::Renderer2D& renderer);
@@ -31,4 +31,5 @@ private:
 	Vector2 pos;
 	int width;
 	int height;
+	char lives;
 };

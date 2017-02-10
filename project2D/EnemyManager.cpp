@@ -22,14 +22,14 @@ void EnemyManager::startup()
 	for (int r = 0; r < 40; r++){
 		xPos = (int)m_startPosition->x + (r % 10) * 60;
 		yPos -= (r % 10 == 0 && r != 0) * 60;
-		SceneHandler::aliens[r] = Enemy(false, 15.0f, (float)xPos, (float)yPos);
+		SceneHandler::aliens[r] = Enemy(false, 1500.0f, (float)xPos, (float)yPos);
 	}
 }
 
 void EnemyManager::Update(float deltatime)
 {
 	// update ufo
-	m_UFO->Update(deltatime);
+	//m_UFO->Update(deltatime);
 	UFODirection(deltatime);
 
 	// update enemies
@@ -54,7 +54,7 @@ void EnemyManager::Update(float deltatime)
 void EnemyManager::Draw(aie::Renderer2D& renderer)
 {
 	// draw ufo
-	m_UFO->Draw(renderer);
+	//m_UFO->Draw(renderer);
 
 	// draw enemies
 

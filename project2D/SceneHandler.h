@@ -8,7 +8,7 @@
 
 struct SceneHandler
 {
-	static Bullet bullets[100];
+	static Bullet bullets[10];
 	static char hiddenBullets;
 	static char activeBullets;
 
@@ -21,9 +21,13 @@ struct SceneHandler
 	static Player* player;
 	static int scoreNumeric;
 
+	static bool globalGameOver;
+	static bool globalGameVictory;
+
 	static void RemoveBullet()
 	{
 		hiddenBullets += 1;
+		activeBullets -= 1;
 	}
 
 	static void RemoveAlien()
@@ -38,32 +42,41 @@ struct SceneHandler
 
 	static void Update()
 	{
-		if (hiddenAliens != 40 /*&& player->health > 0*/)
+		bool playerWinning = player->GetLives() > 0;
+		if (hiddenAliens != 40 && playerWinning)
 		{
-			for each (Bullet shot in bullets)
+			for (short i = 0; i < 4; i += 1)
 			{
-				for each (Shield shield in shields)
-				{
-					shield.CheckCollision(shot);
-				}
+				shields[i].CheckCollision(*player->GetBullet());
+			}
 
-				for each (Enemy alien in aliens)
-				{
-					alien.collisionCheck(shot);
-				}
+			for (short i = 0; i < 40; i += 1)
+			{
+				aliens[i].Update(0.01);
 
-				player->CollisionCheck(shot);
+				if (!aliens[i].isDead())
+				{
+					aliens[i].collisionCheck(*player->GetBullet());
+					player->CollisionCheck(aliens[i].GetBullet());
+
+					for (short j = 0; j < 4; j += 1)
+					{
+						shields[j].CheckCollision(aliens[i].GetBullet());
+					}
+				}
 			}
 		}
 
-		else if (hiddenAliens == 40 /*&& player.health <= 0*/)
+		else if (hiddenAliens < 40 && !playerWinning)
 		{
-			// Display game-over screen
+			globalGameOver = true;
+			globalGameVictory = false;
 		}
 
-		else
+		else if (hiddenAliens == 40 && playerWinning)
 		{
-			// Display game-win screen :)
+			globalGameOver = false;
+			globalGameVictory = true;
 		}
 	}
 };

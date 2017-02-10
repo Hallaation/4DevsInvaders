@@ -21,6 +21,7 @@ Shield::Shield(Vector2 position)
 
 	width = sprite->getWidth();
 	height = sprite->getHeight();
+	lives = 5;
 	isDestroyed = false;
 }
 
@@ -28,15 +29,22 @@ Shield::~Shield()
 {
 }
 
-void Shield::CheckCollision(Bullet shotBy)
+void Shield::CheckCollision(Bullet& shotBy)
 {
+	if (lives == 0)
+	{
+		isDestroyed = true;
+	}
+
 	bool xIntersection = shotBy.GetPosition().x > physVerts[3].x && shotBy.GetPosition().x < physVerts[1].x;
 	bool yIntersection = shotBy.GetPosition().y > physVerts[1].y && shotBy.GetPosition().y < physVerts[3].y;
 	bool isIntersecting = xIntersection && yIntersection;
 	if (!isDestroyed && isIntersecting)
 	{
 		SceneHandler::RemoveShield();
-		SceneHandler::shields[SceneHandler::hiddenShields - 1].isDestroyed = true;
+  		lives -= 1;
+		shotBy.m_bulletActive = false;
+		shotBy.ChangePosition(Vector2(10000, 10000));
 	}
 }
 

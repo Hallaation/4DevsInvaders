@@ -19,6 +19,7 @@ Player::Player()
 	m_bullet = &SceneHandler::bullets[0];
 	m_iLives = 6;
 	m_iScore = 0;
+	m_iSpeed = 2000;
 	m_bulletActive = false;
 	SceneHandler::player = this;
 }
@@ -46,9 +47,14 @@ void Player::Draw(aie::Renderer2D& renderer)
 	char score[16];
 	sprintf_s(score, 16, "Lives: %i", m_iLives);
 	renderer.drawText(m_font, score, 30, 20);
-	if (m_bulletActive) {
+	if (m_bullet->m_bulletActive) {
 		m_bullet->Draw(renderer);
 	}
+}
+
+int Player::GetLives()
+{
+	return m_iLives;
 }
 
 void Player::Update(float deltatime)
@@ -56,24 +62,25 @@ void Player::Update(float deltatime)
 	aie::Input* input = aie::Input::getInstance();
 	//SceneHandler::scoreNumeric = m_iScore;
 	if (input->isKeyDown(aie::INPUT_KEY_LEFT) && m_vPosition->x > 50)
-		m_vPosition->x -= m_iSpeed;
+		m_vPosition->x -= m_iSpeed * deltatime;
 
 	if (input->isKeyDown(aie::INPUT_KEY_RIGHT) && m_vPosition->x < 1230)
-		m_vPosition->x += m_iSpeed;
+		m_vPosition->x += m_iSpeed * deltatime;
 	if (input->wasKeyPressed(aie::INPUT_KEY_SPACE))
 	{
-		if (!m_bulletActive) {
-			m_bulletActive = true;
+		if (!m_bullet->m_bulletActive) {
+			m_bullet->m_bulletActive = true;
 			m_bullet->ChangePosition(*m_vPosition);
 		}
 	}
 
-	if (m_bulletActive)
+	if (m_bullet->m_bulletActive)
 	{
 		m_bullet->Update(deltatime);
 		if (m_bullet->GetPosition().y >= 720)
 		{
-			BulletToggle();
+			m_bullet->m_bulletActive = false;
+			m_bullet->ChangePosition(Vector2(0, 0));
 		}
 	}
 }
@@ -98,7 +105,7 @@ bool Player::CollisionCheck(float a_x, float a_y)
 	}
 }
 
-bool Player::CollisionCheck(Bullet a_EnemyBullet)
+bool Player::CollisionCheck(Bullet& a_EnemyBullet)
 {
 	if (a_EnemyBullet.GetDirection() == Direction::DOWN)
 	{
@@ -107,6 +114,8 @@ bool Player::CollisionCheck(Bullet a_EnemyBullet)
 			m_vPosition->y > a_EnemyBullet.GetPosition().y - m_texture->getHeight() / 2 &&
 			m_vPosition->y < a_EnemyBullet.GetPosition().y + m_texture->getHeight() / 2)
 		{
+			a_EnemyBullet.m_bulletActive = false;
+			a_EnemyBullet.ChangePosition(Vector2(10000, 10000));
 			m_iLives--;
 			return true;
 		}

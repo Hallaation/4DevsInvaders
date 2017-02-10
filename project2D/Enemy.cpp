@@ -1,23 +1,32 @@
 #include "Enemy.h"
 #include "SceneHandler.h"
+#include "Input.h"
 #include <iostream>
+#include <cstdlib>
+#include <time.h>
 
 Enemy::Enemy(bool UFO, float speed, float xPos, float yPos)
 {
-	m_bUFO			= UFO;
-	m_bMoveRight	= true;
-	m_fSpeed		= speed;
-	m_bScreenEdge	= false;
-	m_bCanShoot		= false;
-	m_bDead			= false;
-	m_spPosition	= std::make_shared<glm::vec2>(xPos,yPos);
-	m_spRenderer	= std::make_shared<aie::Renderer2D>();
-	m_iTexture		= 0;
-	m_iTextureSize	= 50;
-	m_fTimer		= 0;
-	//m_bullet		= new Bullet(Vector2(m_spPosition->x, m_spPosition->y), Direction::DOWN);
-	m_bBulletAlive	= false;
+	m_bUFO = UFO;
+	m_bMoveRight = true;
+	m_fSpeed = speed;
+	m_bScreenEdge = false;
+	m_bCanShoot = false;
+	m_bDead = false;
+	m_spPosition = std::make_shared<glm::vec2>(xPos, yPos);
+	m_spRenderer = std::make_shared<aie::Renderer2D>();
+	m_iTexture = 0;
+	m_iTextureSize = 50;
+	m_fTimer = 0;
+	m_bullet = Bullet(Vector2(m_spPosition->x, m_spPosition->y), Direction::DOWN);
 	InitTextures();
+	m_fTime = 1.0f;
+	m_fTimers = 0.0f;
+
+	m_bullet.m_bulletActive = !m_bullet.m_bulletActive;
+	m_bullet.m_bulletActive = !m_bullet.m_bulletActive;
+	m_bullet.ChangePosition(Vector2(m_spPosition->x, m_spPosition->y));
+	srand(time(NULL));
 }
 
 Enemy::~Enemy()
@@ -47,19 +56,39 @@ void Enemy::InitTextures()
 /// update enemy
 void Enemy::Update(float deltatime)
 {
-	// skip if UFO
-	if (!m_bUFO) {
+	if (!m_bDead) {
+		if (!m_bullet.m_bulletActive) {
+			int check = rand() % 2;
+
+			if (check)
+			{
+				m_fTimers += deltatime;
+			}
+
+			if (m_fTimers >= m_fTime && check)
+			{
+				m_fTimers = 0;
+				m_bullet.m_bulletActive = !m_bullet.m_bulletActive;
+				m_bullet.ChangePosition(Vector2(m_spPosition->x, m_spPosition->y));
+			}
+		}
+
 		// animate enemy
 		textureSwap(deltatime);
 		// check enemy direction
 		enemyDirection();
 		// shoot bullet
-		//if (!m_bBulletAlive){
-		//	shot(deltatime);
-		//}
+		if (m_bullet.m_bulletActive) {
+			m_bullet.Update(deltatime);
+		}
+
+		// update enemy position
+		moveEnemy(deltatime);
 	}
-	// update enemy position
-	moveEnemy(deltatime);
+	else
+	{
+		m_bullet.m_bulletActive = false;
+	}
 }
 
 /// draw enemy to screen
@@ -75,9 +104,9 @@ void Enemy::Draw(aie::Renderer2D& renderer)
 	}
 
 	// draw bullet is there is one
-	//if (m_bBulletAlive) {
-	//	m_bullet->Draw();
-	//}
+	if (m_bullet.m_bulletActive) {
+		m_bullet.Draw(renderer);
+	}
 }
 
 std::shared_ptr<glm::vec2> Enemy::position()
@@ -106,7 +135,7 @@ void Enemy::changeDirection()
 	m_bMoveRight = !m_bMoveRight;
 }
 
-bool Enemy::collisionCheck(Bullet bullet)
+bool Enemy::collisionCheck(Bullet& bullet)
 {
 	if (m_spPosition->x > bullet.GetPosition().x - m_iTextureSize / 2 &&
 		m_spPosition->x < bullet.GetPosition().x + m_iTextureSize / 2 &&
@@ -114,9 +143,11 @@ bool Enemy::collisionCheck(Bullet bullet)
 		m_spPosition->y < bullet.GetPosition().y + m_iTextureSize / 2)
 	{
 		// Destroy/de-activate bullet here...
+		bullet.m_bulletActive = false;
+		bullet.ChangePosition(Vector2(10000, 10000));
 		SceneHandler::RemoveAlien();
 		SceneHandler::scoreNumeric += 1;
-		SceneHandler::aliens[SceneHandler::hiddenAliens - 1].setDead(true);
+		setDead(true);
 	}
 
 	return m_bDead;
@@ -135,14 +166,15 @@ void Enemy::setDead(bool status)
 /// shoot bullet
 void Enemy::shot(float deltatime)
 {
-	if (m_bBulletAlive)
+	if (m_bullet.m_bulletActive)
 	{
-		//m_bullet->Update(deltatime);
-		//if (m_bullet->GetPosition().y <= 0)
-		//{
-		//	m_bBulletAlive = false;
-		//}
+		m_bullet.Update(deltatime);
 	}
+}
+
+Bullet& Enemy::GetBullet()
+{
+	return m_bullet;
 }
 
 /// swap enemies texture overtime
@@ -161,11 +193,11 @@ void Enemy::textureSwap(float deltatime)
 void Enemy::moveEnemy(float deltatime)
 {
 	// move right
-	if (m_bMoveRight && m_spPosition->x < m_fMaxRight) {
+	if (m_bMoveRight) {
 		m_spPosition->x += m_fSpeed * deltatime;
 	}
 	// move left
-	if (!m_bMoveRight && m_spPosition->x > m_fMaxLeft) {
+	if (!m_bMoveRight) {
 		m_spPosition->x -= m_fSpeed * deltatime;
 	}
 }
@@ -173,11 +205,11 @@ void Enemy::moveEnemy(float deltatime)
 void Enemy::enemyDirection()
 {
 	// if moving left and hits the left edge, move right
-	if (!m_bMoveRight && m_spPosition->x < 50) {
-		m_bHitEdge = true;
+	if (m_spPosition->x < 50) {
+		m_bMoveRight = true;
 	}
 	// if moving right and hits the right edge, move left
-	if (m_bMoveRight && m_spPosition->x > 1200) {
-		m_bHitEdge = true;
+	if (m_spPosition->x > 1200) {
+		m_bMoveRight = false;
 	}
 }

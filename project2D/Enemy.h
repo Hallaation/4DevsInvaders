@@ -23,7 +23,7 @@ public:
 	bool hitEdge(bool swap);
 	void changeDirection();
 
-	bool collisionCheck(Bullet bullet);
+	bool collisionCheck(Bullet& bullet);
 	bool isDead();
 	void setDead(bool status);
 
@@ -32,11 +32,14 @@ public:
 	void Draw(aie::Renderer2D& renderer);
 	void Update(float deltatime);
 
+	Bullet& GetBullet();
+
+
 private:
 	std::vector<std::shared_ptr<aie::Texture>>	m_vTextures;
 	std::shared_ptr<aie::Renderer2D>			m_spRenderer;
 	std::shared_ptr<glm::vec2>					m_spPosition;
-	//Bullet * m_bullet;
+	Bullet m_bullet;
 	int		m_iTexture;
 	int		m_iTextureSize;
 	float	m_fMaxRight;
@@ -49,8 +52,9 @@ private:
 	bool	m_bCanShoot;
 	bool	m_bDead;
 	bool	m_bHitEdge;
-	bool	m_bBulletAlive;
 
+	float m_fTime;
+	float m_fTimers;
 	// private functions
 	void textureSwap(float deltatime);
 	void moveEnemy(float deltatime);
