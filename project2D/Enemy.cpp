@@ -22,7 +22,7 @@ Enemy::Enemy(bool UFO, float speed, float xPos, float yPos)
 	InitTextures();
 	m_fTime = 1.0f;
 	m_fTimers = 0.0f;
-
+	m_iHealth = 3;
 	m_bullet.m_bulletActive = !m_bullet.m_bulletActive;
 	m_bullet.m_bulletActive = !m_bullet.m_bulletActive;
 	m_bullet.ChangePosition(Vector2(m_spPosition->x, m_spPosition->y));
@@ -49,7 +49,7 @@ void Enemy::InitTextures()
 		m_vTextures.push_back(std::make_shared<aie::Texture>("./textures/Enemy1_1.png"));
 		m_vTextures.push_back(std::make_shared<aie::Texture>("./textures/Enemy_Explode.png"));
 		m_fMaxLeft = 50;
-		m_fMaxRight = 1200;
+		m_fMaxRight = 1300;
 	}
 }
 
@@ -137,6 +137,12 @@ void Enemy::changeDirection()
 
 bool Enemy::collisionCheck(Bullet& bullet)
 {
+	if (m_iHealth <= 0)
+	{
+		setDead(true);
+		SceneHandler::RemoveAlien();
+		SceneHandler::scoreNumeric += 1;
+	}
 	if (m_spPosition->x > bullet.GetPosition().x - m_iTextureSize / 2 &&
 		m_spPosition->x < bullet.GetPosition().x + m_iTextureSize / 2 &&
 		m_spPosition->y > bullet.GetPosition().y - m_iTextureSize / 2 &&
@@ -145,9 +151,7 @@ bool Enemy::collisionCheck(Bullet& bullet)
 		// Destroy/de-activate bullet here...
 		bullet.m_bulletActive = false;
 		bullet.ChangePosition(Vector2(10000, 10000));
-		SceneHandler::RemoveAlien();
-		SceneHandler::scoreNumeric += 1;
-		setDead(true);
+		m_iHealth--;
 	}
 
 	return m_bDead;

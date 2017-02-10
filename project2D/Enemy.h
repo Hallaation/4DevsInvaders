@@ -53,6 +53,7 @@ private:
 	bool	m_bDead;
 	bool	m_bHitEdge;
 
+	int m_iHealth;
 	float m_fTime;
 	float m_fTimers;
 	// private functions

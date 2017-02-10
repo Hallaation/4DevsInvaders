@@ -28,6 +28,7 @@ public:
 	bool IsDead();
 	Vector2 GetPosition();
 	Bullet* GetBullet();
+
 private:
 	Vector2*            m_vPosition;
 	aie::Texture*       m_texture;
@@ -37,7 +38,7 @@ private:
 	Bullet*              m_bullet;
 	int                 m_iLives;
 	int                 m_iScore;
-	float         m_iSpeed;
+	float				m_iSpeed;
 	bool                m_bulletActive;
 };
 
